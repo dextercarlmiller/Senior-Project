@@ -1,8 +1,6 @@
 //Dexter's TicTacToe functions defined
 #include "tic.h"
 
-using namespace std;
-
 void ticTacToe::setPoopArray()
 {
 choice = 0;

@@ -1,7 +1,7 @@
 //this is the header file for my tictactoe game
-//#include <iostream>
-//#include <iomanip>
-//#include <string>
+#include <iostream>
+#include <iomanip>
+#include <string>
 
 class ticTacToe
 {
