@@ -1,8 +1,8 @@
 
 class ticTacToe: 
-    board = [[0, 0, 0], 
-             [0, 0, 0],
-             [0, 0, 0]]
+    board = [[2, 1, 1], 
+             [1, 2, 2],
+             [2, 1, 1]]
     def setBoardArray():
         #this fills the array and initializes it
         #We should do a vector to make it easier to iterate through!
@@ -58,14 +58,16 @@ class ticTacToe:
                 if n[i][j] == 0:
                     full = False
         return full
-    def checkCatGame():
+    def checkCatGame(self,n):
         # If board is filled and no win = cats game
         # this iterates through the whole array setting the bool value
-        # is filled function?
         catGame = False
+        if self.isFull(n) and not self.checkWin(n):
+            catGame = True
         return catGame 
 game = ticTacToe
 Board = game.board
 print(game.isFull(Board))
 print(game.checkWin(Board))
 print(game.printBoard(Board))
+print(game.checkCatGame(game,Board))
