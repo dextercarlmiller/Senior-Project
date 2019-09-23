@@ -4,15 +4,11 @@ class ticTacToe:
              [1, 2, 2],
              [2, 1, 1]]
     def setBoardArray():
-        #this fills the array and initializes it
-        #We should do a vector to make it easier to iterate through!
         board = [[0, 0, 0], 
              [0, 0, 0],
              [0, 0, 0]]
         return board
     def printBoard(n):
-        # this prints the board in ascii
-        # what type of graphics can i do? 
         return n
     def player1Turn():
         # this goes through a do while loop, until the input is correct
@@ -24,10 +20,6 @@ class ticTacToe:
         # same as player 1 
         return board
     def checkWin(n):
-        # this function checks if there are 3 elements in a row that are equal
-        # done by a lot of else if statements. 
-        # Returns an int 1 or 0
-        # iterative checking? 
         win = False
         #Horizontal
         for i in range(0,3):
@@ -50,8 +42,6 @@ class ticTacToe:
                         win = True
         return win
     def isFull(n):
-        #This function is going to return true if the board is full
-        #If not the board will be empty
         full = True
         for i in range(0,3):
             for j in range(0,3):
@@ -59,8 +49,6 @@ class ticTacToe:
                     full = False
         return full
     def checkCatGame(self,n):
-        # If board is filled and no win = cats game
-        # this iterates through the whole array setting the bool value
         catGame = False
         if self.isFull(n) and not self.checkWin(n):
             catGame = True
