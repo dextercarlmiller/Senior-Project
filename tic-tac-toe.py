@@ -1,13 +1,14 @@
 class ticTacToe: 
-    board = [[2, 1, 1], 
-             [1, 2, 2],
-             [2, 1, 1]]
+    def __init__(self, master):
+        board = [[0, 0, 0], 
+             [0, 0, 0],
+             [0, 0, 0]]
     def setBoardArray():
         board = [[0, 0, 0], 
              [0, 0, 0],
              [0, 0, 0]]
         return board
-    def printBoard(n):
+    def printBoard(self,n):
         return n
     def player1Turn():
         # this goes through a do while loop, until the input is correct
@@ -18,7 +19,7 @@ class ticTacToe:
         # Same as player 1 but sets value to O
         # same as player 1 
         return board
-    def checkWin(n):
+    def checkWin(self,n):
         win = False
         #Horizontal
         for i in range(0,3):
@@ -40,7 +41,7 @@ class ticTacToe:
                    if n[2][0] != 0:
                         win = True
         return win
-    def isFull(n):
+    def isFull(self,n):
         full = True
         for i in range(0,3):
             for j in range(0,3):
@@ -52,9 +53,3 @@ class ticTacToe:
         if self.isFull(n) and not self.checkWin(n):
             catGame = True
         return catGame 
-game = ticTacToe
-Board = game.board
-print(game.isFull(Board))
-print(game.checkWin(Board))
-print(game.printBoard(Board))
-print(game.checkCatGame(game,Board))
