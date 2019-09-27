@@ -1,8 +1,8 @@
 from tkinter import *
-from tic-tac-toe.py import *
-class MyFirstGUI:
+class boardgui:
     def __init__(self, master):
         self.master = master
+        
         master.title("Tic-Tac-Toe")
         master.geometry("240x302")
         self.button1 = Button(master,text="_", command=master.quit,width=10,height=6)
@@ -26,7 +26,3 @@ class MyFirstGUI:
 
     def greet(self):
         print("Greetings!")
-
-root = Tk()
-my_gui = MyFirstGUI(root)
-root.mainloop()
