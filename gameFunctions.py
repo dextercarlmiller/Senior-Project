@@ -1,14 +1,8 @@
-import graphics as graphics
-from tkinter import *
+
 class ticTacToe: 
     board = [[0, 0, 0], 
              [0, 0, 0],
              [0, 0, 0]]
-    def setBoardArray():
-        board = [[0, 0, 0], 
-             [0, 0, 0],
-             [0, 0, 0]]
-        return board
     def printBoard(self,n):
         return n
     def player1Turn():
