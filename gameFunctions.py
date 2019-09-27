@@ -1,8 +1,7 @@
 import graphics as graphics
 from tkinter import *
 class ticTacToe: 
-    def __init__(self, master):
-        board = [[0, 0, 0], 
+    board = [[0, 0, 0], 
              [0, 0, 0],
              [0, 0, 0]]
     def setBoardArray():
@@ -55,6 +54,3 @@ class ticTacToe:
         if self.isFull(n) and not self.checkWin(n):
             catGame = True
         return catGame 
-root = Tk()
-my_gui = graphics.boardgui(root)
-root.mainloop()

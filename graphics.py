@@ -1,11 +1,11 @@
 from tkinter import *
 class boardgui:
-    def __init__(self, master):
+    def __init__(self, master,board):
         self.master = master
         
         master.title("Tic-Tac-Toe")
         master.geometry("240x302")
-        self.button1 = Button(master,text="_", command=master.quit,width=10,height=6)
+        self.button1 = Button(master,text="_", command=self.b1,width=10,height=6)
         self.button2 = Button(master,text="_", command=master.quit,width=10,height=6)
         self.button3 = Button(master,text="_", command=master.quit,width=10,height=6)
         self.button4 = Button(master,text="_", command=master.quit,width=10,height=6)
@@ -26,3 +26,10 @@ class boardgui:
 
     def greet(self):
         print("Greetings!")
+
+    def b1(self,n):
+        self.button1 = Button(Text="X")
+        n = n + [[1, 0, 0], 
+             [0, 0, 0],
+             [0, 0, 0]]
+        return n
