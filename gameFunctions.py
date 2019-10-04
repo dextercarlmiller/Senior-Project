@@ -3,17 +3,6 @@ class ticTacToe:
     board = [[0, 0, 0], 
              [0, 0, 0],
              [0, 0, 0]]
-    def printBoard(self,n):
-        return n
-    def player1Turn():
-        # this goes through a do while loop, until the input is correct
-        # given correct input, it goes through a case switch, checking and setting place value
-        # Do i have to write a long switch, or can i iterate through? 
-        return board
-    def player2Turn():
-        # Same as player 1 but sets value to O
-        # same as player 1 
-        return board
     def checkWin(self,n):
         win = False
         #Horizontal
