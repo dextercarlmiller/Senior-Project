@@ -1,8 +1,28 @@
 
 class ticTacToe: 
-    board = [[0, 0, 0], 
-             [0, 0, 0],
-             [0, 0, 0]]
+    board = [[1, 2, 3], 
+             [4, 5, 6],
+             [7, 8, 9]]
+    Turn = 1
+    def PlayerTurn(self,n,CellID,turn):
+        for i in range(0,3):
+            for j in range(0,3):
+                if CellID == n[i][j]:
+                    if n==1:
+                        n[i][j] = "X"
+                        print(n[i][j])
+                    if n==2:
+                        n[i][j] = "O"
+                    turn = ticTacToe.ChangeTurn(self,turn)    
+        return n
+
+    def ChangeTurn(self,n):
+        if n == 1:
+            n=2
+            return n
+        if n ==2:
+            n=1
+            return n
     def checkWin(self,n):
         win = False
         #Horizontal
@@ -37,3 +57,4 @@ class ticTacToe:
         if self.isFull(n) and not self.checkWin(n):
             catGame = True
         return catGame 
+

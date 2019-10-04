@@ -1,7 +1,6 @@
 import gameFunctions as game
-import wx
 import wx.lib.buttons as buttons
-
+import wx
 
 class TicTacToeFrame(wx.Frame):
     def __init__(self,board):
@@ -37,17 +36,12 @@ class TTTPanel(wx.Panel):
         self.widgets = [self.button1, self.button2, self.button3,
                         self.button4, self.button5, self.button6, 
                         self.button7, self.button8, self.button9]
+
         for j in range(len(self.widgets)):
             self.widgets[j].SetFont(font)
             self.widgets[j].SetLabel("0")
             self.widgets[j].Id = self.widgets[j].Id + 31999
             self.widgets[j].Bind(wx.EVT_BUTTON,self.OnToggle)
-
-        # for button in self.widgets: 
-        #     button.SetFont(font)
-        #     button.SetLabel("0")
-        #     event = wx.EVT_BUTTON
-        #     button.Bind(event,self.OnToggle)
 
         self.fgSizer.AddMany(self.widgets)
         mainSizer.Add(self.fgSizer,0,wx.ALL|wx.Center,5)
@@ -55,11 +49,14 @@ class TTTPanel(wx.Panel):
 
     def OnToggle(self,event):
         button = event.GetEventObject()
-        button.SetLabel("X")
-        board = game.ticTacToe.board
-        print(board)
+        gamefunctions = game.ticTacToe
+        board = gamefunctions.board
         button_id = button.GetId()
+        Turn = 1
+        print(board)
         print(button_id)
+        board = gamefunctions.PlayerTurn(gamefunctions,board,1,Turn)
+        print(board)
 
 def run(board):
     app = wx.App(False)
