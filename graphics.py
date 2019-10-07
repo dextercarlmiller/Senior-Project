@@ -5,11 +5,14 @@ import wx
 class TicTacToeFrame(wx.Frame):
     def __init__(self,board):
         title = "Tic-Tac-Toe"
-        size = (500,500)
+        size = (335,355)
         wx.Frame.__init__(self,parent =None,title=title,size=size)
         panel = TTTPanel(self,board)
         self.Show()
+Turn =1   
+Label = " "    
 class TTTPanel(wx.Panel):
+
     def __init__(self,parent,board):
         wx.Panel.__init__(self,parent)
         self.toggled = False
@@ -39,7 +42,7 @@ class TTTPanel(wx.Panel):
 
         for j in range(len(self.widgets)):
             self.widgets[j].SetFont(font)
-            self.widgets[j].SetLabel("0")
+            self.widgets[j].SetLabel("_")
             self.widgets[j].Id = self.widgets[j].Id + 31999
             self.widgets[j].Bind(wx.EVT_BUTTON,self.OnToggle)
 
@@ -52,16 +55,19 @@ class TTTPanel(wx.Panel):
         gamefunctions = game.ticTacToe
         board = gamefunctions.board
         button_id = button.GetId()
-        Turn = 1
+        global Turn
+        global Label
+        board,Turn,Label = gamefunctions.PlayerTurn(gamefunctions,board,button_id,Turn,Label)
+        if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
+            if not gamefunctions.checkCatGame(gamefunctions,board):
+                button.SetLabel(Label)
+        if gamefunctions.checkCatGame(gamefunctions,board):
+            print("There is a Cat Game!")
+        if gamefunctions.checkWin(gamefunctions,board):
+            print("There is a win!")
         print(board)
-        print(button_id)
-        board = gamefunctions.PlayerTurn(gamefunctions,board,1,Turn)
-        print(board)
-
+       
 def run(board):
     app = wx.App(False)
     frame = TicTacToeFrame(board)
     app.MainLoop()
-
-
-
