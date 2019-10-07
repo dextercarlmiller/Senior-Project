@@ -8,7 +8,10 @@ class TicTacToeFrame(wx.Frame):
         size = (335,355)
         wx.Frame.__init__(self,parent =None,title=title,size=size)
         panel = TTTPanel(self,board)
+        self.StatusBar = self.CreateStatusBar(1)
         self.Show()
+    def catsGame(self):
+        TicTacToeFrame.SetStatusBarPane("Cat's Game!")
 Turn =1   
 Label = " "    
 class TTTPanel(wx.Panel):
@@ -62,7 +65,7 @@ class TTTPanel(wx.Panel):
             if not gamefunctions.checkCatGame(gamefunctions,board):
                 button.SetLabel(Label)
         if gamefunctions.checkCatGame(gamefunctions,board):
-            print("There is a Cat Game!")
+            TicTacToeFrame.catsGame(TicTacToeFrame)
         if gamefunctions.checkWin(gamefunctions,board):
             print("There is a win!")
         print(board)
