@@ -1,33 +1,46 @@
 import gameFunctions as game
 import wx.lib.buttons as buttons
 import wx
-
-class TicTacToeFrame(wx.Frame):
-    def __init__(self,board):
-        title = "Tic-Tac-Toe"
-        size = (335,355)
-        wx.Frame.__init__(self,parent =None,title=title,size=size)
-        panel = TTTPanel(self,board)
-        self.StatusBar = self.CreateStatusBar(1)
-        self.Show()
-    def catsGame(self):
-        TicTacToeFrame.SetStatusBarPane("Cat's Game!")
 Turn =1   
-Label = " "    
-class TTTPanel(wx.Panel):
+Label = " "
+class TicTacToeFrame(wx.Frame):
+    def __init__(self):
+        title = "Tic-Tac-Toe"
+        size = (400,400)
+        wx.Frame.__init__(self,parent =None,title=title,size=size)
+        gameMenu = wx.Menu()
+        TTT = gameMenu.Append(101,"Tic-Tac-Toe","Tic-Tac-Toe")
+        gameMenu.Append(102, "Connect 4", "Connect 4")
+        gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
+        exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")
+        
+        menuBar = wx.MenuBar()
+        menuBar.Append(gameMenu,"Game") 
+        self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
+        self.Bind(wx.EVT_MENU,self.onExit,exitMenuItem)
+        wx.Frame.SetMenuBar(self,menuBar) 
 
-    def __init__(self,parent,board):
+
+    def TicTacToe(self,event):
+        panel = TTTPanel(self)
+        self.TTTPanel.Show()
+
+    def onExit(self,event):
+        self.Close()
+    
+class TTTPanel(wx.Panel):
+    def __init__(self,parent):
         wx.Panel.__init__(self,parent)
         self.toggled = False
-        self.playerWon = False
-        self.BoardSetup(board)
-    def BoardSetup(self,board):
+        self.BoardSetup()
+        self.Update()
+    def BoardSetup(self):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.fgSizer  = wx.FlexGridSizer(rows=3,cols=3,vgap=3,hgap=3)
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
-        font = wx.Font(22,wx.FONTFAMILY_DEFAULT,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD)
-                
+        font = wx.Font(22,wx.FONTFAMILY_DEFAULT,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD)        
         size = (100,100)
+
         self.button1 = buttons.GenToggleButton(self,size=size,  name="btn1")
         self.button2 = buttons.GenToggleButton(self, size=size, name="btn2")
         self.button3 = buttons.GenToggleButton(self, size=size, name="btn3")
@@ -37,8 +50,7 @@ class TTTPanel(wx.Panel):
         self.button7 = buttons.GenToggleButton(self, size=size, name="btn7")
         self.button8 = buttons.GenToggleButton(self, size=size, name="btn8")
         self.button9 = buttons.GenToggleButton(self, size=size, name="btn9")
-        self.normalBtnColour = self.button1.GetBackgroundColour()
- 
+
         self.widgets = [self.button1, self.button2, self.button3,
                         self.button4, self.button5, self.button6, 
                         self.button7, self.button8, self.button9]
@@ -61,16 +73,11 @@ class TTTPanel(wx.Panel):
         global Turn
         global Label
         board,Turn,Label = gamefunctions.PlayerTurn(gamefunctions,board,button_id,Turn,Label)
-        if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
-            if not gamefunctions.checkCatGame(gamefunctions,board):
-                button.SetLabel(Label)
         if gamefunctions.checkCatGame(gamefunctions,board):
-            TicTacToeFrame.catsGame(TicTacToeFrame)
+            print("Cat's game")
         if gamefunctions.checkWin(gamefunctions,board):
-            print("There is a win!")
+            print("There is a win")
+        if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
+                button.SetLabel(Label)
         print(board)
        
-def run(board):
-    app = wx.App(False)
-    frame = TicTacToeFrame(board)
-    app.MainLoop()

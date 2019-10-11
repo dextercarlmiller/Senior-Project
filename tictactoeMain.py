@@ -5,5 +5,6 @@ import wx.lib.buttons as buttons
 
 game = game.ticTacToe
 board = game.board
-graphics.run(board)
-
+app = wx.App(False)
+frame = graphics.TicTacToeFrame()
+app.MainLoop()

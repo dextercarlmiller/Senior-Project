@@ -7,8 +7,6 @@ class ticTacToe:
         for i in range(0,3):
             for j in range(0,3):
                 if CellID == n[i][j]:
-                    print(CellID)
-                    print(n[i][j])
                     if Turn==1:
                         n[i][j] = "X"
                         label = "X"
@@ -40,11 +38,11 @@ class ticTacToe:
                     win = True
         #Diagonal
         if n[0][0] == n[1][1] and n[0][0] == n[2][2]:
-                   if n[0][0] != 0:
-                        win = True
+            if n[0][0] != 0:
+                win = True
         if n[2][0] == n[1][1] and n[2][0] == n[0][2]:
-                   if n[2][0] != 0:
-                        win = True
+            if n[2][0] != 0:
+                win = True
         return win
     def isFull(self,n):
         full = True
@@ -59,3 +57,8 @@ class ticTacToe:
         if self.isFull(self,n) and (not self.checkWin(self,n)):
             catGame = True
         return catGame 
+    def BoardReset(self,n):
+        n = [[1, 2, 3], 
+             [4, 5, 6],
+             [7, 8, 9]]
+        return n
