@@ -80,4 +80,6 @@ class TTTPanel(wx.Panel):
         if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
                 button.SetLabel(Label)
         print(board)
-       
+app = wx.App(False)
+frame = TicTacToeFrame()
+app.MainLoop()       
