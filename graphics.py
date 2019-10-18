@@ -19,10 +19,12 @@ class TicTacToeFrame(wx.Frame):
         self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
         self.Bind(wx.EVT_MENU,self.onExit,exitMenuItem)
         wx.Frame.SetMenuBar(self,menuBar) 
+        self.Show() 
 
 
     def TicTacToe(self,event):
         panel = TTTPanel(self)
+        self.TicTacToe.Hide()
         self.TTTPanel.Show()
 
     def onExit(self,event):
@@ -80,4 +82,3 @@ class TTTPanel(wx.Panel):
         if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
                 button.SetLabel(Label)
         print(board)
-       
