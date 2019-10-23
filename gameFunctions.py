@@ -4,16 +4,22 @@ class ticTacToe:
              [4, 5, 6],
              [7, 8, 9]]
     def PlayerTurn(self,n,CellID,Turn,label):
+        print(n)
         for i in range(0,3):
             for j in range(0,3):
                 if CellID == n[i][j]:
+                    print(Turn)
                     if Turn==1:
                         n[i][j] = "X"
                         label = "X"
                     if Turn==2:
                         n[i][j] = "O"
                         label = "O"
-                    Turn = self.ChangeTurn(ticTacToe,Turn)
+                    if n[i][j] == "X":
+                        label = "X"
+                    if n[i][j] == "O":
+                        label = "O"
+        Turn = self.ChangeTurn(ticTacToe,Turn)                        
         return n,Turn,label
     def ChangeTurn(self,n):
         if n == 1:

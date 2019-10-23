@@ -9,33 +9,41 @@ class TicTacToeFrame(wx.Frame):
         size = (400,400)
         wx.Frame.__init__(self,parent =None,title=title,size=size)
         gameMenu = wx.Menu()
-        TTT = gameMenu.Append(101,"Tic-Tac-Toe","Tic-Tac-Toe")
-        gameMenu.Append(102, "Connect 4", "Connect 4")
-        gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
-        exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")
-        
         menuBar = wx.MenuBar()
         menuBar.Append(gameMenu,"Game") 
+        TTT = gameMenu.Append(101,"Tic-Tac-Toe","Tic-Tac-Toe")
+        test = gameMenu.Append(102, "Connect 4", "Connect 4")
+        gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
+        exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")
+        self.panel = TTTPanel(self)
+
+        # self.test = testclass(self)
+        # self.test.Hide()
         self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
+        self.Bind(wx.EVT_MENU,self.TicTacToe,test)
         self.Bind(wx.EVT_MENU,self.onExit,exitMenuItem)
-        wx.Frame.SetMenuBar(self,menuBar) 
+        self.SetMenuBar(menuBar) 
+
         self.Show() 
 
 
     def TicTacToe(self,event):
-        panel = TTTPanel(self)
-        self.TicTacToe.Hide()
-        self.TTTPanel.Show()
-
+        self.test.Hide()
+        self.panel.Show()
+        self.Layout()
+    # def TestClass(self,event):
+    #     self.panel.Hide()
+    #     self.test.Show()
+    #     self.Layout()
     def onExit(self,event):
         self.Close()
     
 class TTTPanel(wx.Panel):
     def __init__(self,parent):
-        wx.Panel.__init__(self,parent)
+        wx.Panel.__init__(self,parent=parent)
         self.toggled = False
         self.BoardSetup()
-        self.Update()
+        print("hello world")
     def BoardSetup(self):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.fgSizer  = wx.FlexGridSizer(rows=3,cols=3,vgap=3,hgap=3)
@@ -80,5 +88,12 @@ class TTTPanel(wx.Panel):
         if gamefunctions.checkWin(gamefunctions,board):
             print("There is a win")
         if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
+                print(not gamefunctions.checkWin(gamefunctions,board))
+                print(not gamefunctions.isFull(gamefunctions,board))
                 button.SetLabel(Label)
         print(board)
+class testclass(wx.Panel):
+    def __init__(self, parent):
+        """Constructor"""
+        wx.Panel.__init__(self, parent=parent)
+        txt = wx.TextCtrl(self)    
