@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
@@ -11,6 +12,18 @@
       "type": "python",
       "request": "launch",
       "program": "C:\\Users\\dexterm\\Desktop\\Senior-Project\\tictactoeMain.py",
+=======
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "C:\\Users\\Dexter\\Desktop\\Senior-Project\\tictactoeMain.py",
+>>>>>>> 079ce1f00bf0578b1a5ee060cd0b1650783ce5a3
       "console": "integratedTerminal"
     }
     ]

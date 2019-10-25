@@ -8,15 +8,19 @@ class TicTacToeFrame(wx.Frame):
         title = "Tic-Tac-Toe"
         wx.Frame.__init__(self,parent =None,title=title,size=(400,400))
         gameMenu = wx.Menu()
+        menuBar = wx.MenuBar()
+        menuBar.Append(gameMenu,"Game") 
         TTT = gameMenu.Append(101,"Tic-Tac-Toe","Tic-Tac-Toe")
-        gameMenu.Append(102, "Connect 4", "Connect 4")
+        test = gameMenu.Append(102, "Connect 4", "Connect 4")
         gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
         exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")     
         menuBar = wx.MenuBar()
         menuBar.Append(gameMenu,"Game") 
         self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
+        self.Bind(wx.EVT_MENU,self.TicTacToe,test)
         self.Bind(wx.EVT_MENU,self.onExit,exitMenuItem)
-        wx.Frame.SetMenuBar(self,menuBar) 
+        self.SetMenuBar(menuBar) 
+
         self.Show() 
 
 
@@ -32,7 +36,7 @@ class TTTPanel(wx.Panel):
         wx.Panel.__init__(self,parent,size=(600,600))
         self.toggled = False
         self.BoardSetup()
-        self.Update()
+        print("hello world")
     def BoardSetup(self):
         mainSizer = wx.BoxSizer(wx.VERTICAL)
         self.fgSizer  = wx.FlexGridSizer(rows=3,cols=3,vgap=3,hgap=3)
