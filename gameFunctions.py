@@ -3,18 +3,19 @@ class ticTacToe:
     board = [[1, 2, 3], 
              [4, 5, 6],
              [7, 8, 9]]
-    def PlayerTurn(self,n,CellID,Turn,label):
+    def PlayerTurn(self,CellID,board):
+        dontDraw = False
         for i in range(0,3):
             for j in range(0,3):
-                if CellID == n[i][j]:
-                    if Turn==1:
-                        n[i][j] = "X"
-                        label = "X"
-                    if Turn==2:
-                        n[i][j] = "O"
-                        label = "O"
-                    Turn = self.ChangeTurn(ticTacToe,Turn)
-        return n,Turn,label
+                if CellID == board[i][j]:
+                    board[i][j] = "X"
+                    print(board[i][j])
+
+
+    def spacePlayed(self,space):
+        if space == "X" or space == "O":
+            return False
+        return True
     def ChangeTurn(self,n):
         if n == 1:
             n=2

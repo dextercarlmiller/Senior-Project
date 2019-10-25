@@ -6,14 +6,12 @@ Label = " "
 class TicTacToeFrame(wx.Frame):
     def __init__(self):
         title = "Tic-Tac-Toe"
-        size = (400,400)
-        wx.Frame.__init__(self,parent =None,title=title,size=size)
+        wx.Frame.__init__(self,parent =None,title=title,size=(400,400))
         gameMenu = wx.Menu()
         TTT = gameMenu.Append(101,"Tic-Tac-Toe","Tic-Tac-Toe")
         gameMenu.Append(102, "Connect 4", "Connect 4")
         gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
-        exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")
-        
+        exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")     
         menuBar = wx.MenuBar()
         menuBar.Append(gameMenu,"Game") 
         self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
@@ -24,15 +22,14 @@ class TicTacToeFrame(wx.Frame):
 
     def TicTacToe(self,event):
         panel = TTTPanel(self)
-        self.TicTacToe.Hide()
-        self.TTTPanel.Show()
+        panel.Show()          
 
     def onExit(self,event):
         self.Close()
     
 class TTTPanel(wx.Panel):
     def __init__(self,parent):
-        wx.Panel.__init__(self,parent)
+        wx.Panel.__init__(self,parent,size=(600,600))
         self.toggled = False
         self.BoardSetup()
         self.Update()
@@ -71,14 +68,9 @@ class TTTPanel(wx.Panel):
         button = event.GetEventObject()
         gamefunctions = game.ticTacToe
         board = gamefunctions.board
-        button_id = button.GetId()
+        draw = False
         global Turn
-        global Label
-        board,Turn,Label = gamefunctions.PlayerTurn(gamefunctions,board,button_id,Turn,Label)
-        if gamefunctions.checkCatGame(gamefunctions,board):
-            print("Cat's game")
-        if gamefunctions.checkWin(gamefunctions,board):
-            print("There is a win")
-        if (not gamefunctions.checkWin(gamefunctions,board)) or (not gamefunctions.isFull(gamefunctions,board)):
-                button.SetLabel(Label)
+        button_id = button.GetId()
+        print(button_id)
+        gamefunctions.PlayerTurn(gamefunctions,button_id,board,Turn)
         print(board)
