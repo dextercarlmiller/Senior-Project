@@ -14,8 +14,6 @@ class TicTacToeFrame(wx.Frame):
         test = gameMenu.Append(102, "Connect 4", "Connect 4")
         gameMenu.Append(wx.ID_ABOUT, "Snake","Snake")
         exitMenuItem = gameMenu.Append(wx.ID_EXIT,"Exit","Close")     
-        menuBar = wx.MenuBar()
-        menuBar.Append(gameMenu,"Game") 
         self.Bind(wx.EVT_MENU,self.TicTacToe,TTT)
         self.Bind(wx.EVT_MENU,self.TicTacToe,test)
         self.Bind(wx.EVT_MENU,self.onExit,exitMenuItem)
@@ -76,5 +74,5 @@ class TTTPanel(wx.Panel):
         global Turn
         button_id = button.GetId()
         print(button_id)
-        gamefunctions.PlayerTurn(gamefunctions,button_id,board,Turn)
+        gamefunctions.PlayerTurn(gamefunctions,button_id,board)
         print(board)
