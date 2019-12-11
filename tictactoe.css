@@ -19,7 +19,7 @@ td {
     text-align: center;
 }
 
-#boardTable {
+.boardTable {
     border-collapse: collapse;
 }
 
