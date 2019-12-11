@@ -23,18 +23,18 @@ td {
     border-collapse: collapse;
 }
 
-tr:first-child {
+.boardTable tr:first-child {
     border-bottom: 2px solid black;
 }
 
-tr:last-child {
+.boardTable tr:last-child {
     border-top: 2px solid black;
 }
 
-td:first-child {
+.boardTable tr td:first-child {
     border-right: 2px solid black;
 }
 
-td:last-child {
+.boardTable tr td:last-child {
     border-left: 2px solid black;
 }
