@@ -3,23 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="generator" content="Site Designer 4.0.3113 - Trial Version">
 <title>Games</title>
 <link rel="stylesheet" type="text/css" href="css/tictactoe.css">
-<script src="js/project.js"></script>
-<link rel="stylesheet" href="css/foundation.min.css">
-<link rel="stylesheet" href="css/wireframe-theme.min.css">
-<script>document.createElement( "picture" );</script>
-<script class="picturefill" async="async" src="js/picturefill.min.js"></script>
+<script type="text/javascript" src="js/project.js" defer></script>
 <link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,b">
 </head> 
 <body>
     <h1 class="site-title">Project Study Hall</h1>
         <div class="container nav-wrapper">
-          <a class="link-text nav-button" href="/index.html">Home</a>
+          <a class="link-text nav-button" href="index.html">Home</a>
           <a class="link-text nav-button" href="#">Projects</a>
-          <a class="link-text nav-button" href="/me.html">About Me</a>
+          <a class="link-text nav-button" href="me.html">About Me</a>
         </div>    
 <section class="TicTacToe">
     <h1 id="TicTacTitle">Tic-Tac-Toe Game</h1>
@@ -40,7 +34,11 @@
             <td class="cell" id="9"></td>
         </tr>
     </table>
-    <button onClick="startGame()">Replay</button>
+    <div class="endgame">
+        <div class="text"></div>
+    </div>
+    <button class="TicTacButton" onClick="startGame()">Replay</button>
+
 </section> 
  </body> 
 
