@@ -1,5 +1,11 @@
+a {
+    text-decoration: none;
+}
+
 .TicTacToe {
     width: 310px;
+    height: 357px;
+    margin: auto;
 }
 
 tr {
@@ -17,11 +23,13 @@ td {
 #TicTacTitle {
     width: 310px;
     text-align: center;
+    scroll-margin: inherit;
 }
 
 .boardTable {
     border-collapse: collapse;
-    position: absolute;
+    position: inherit;
+    margin: inherit;
     width: 308px;
     height: 308px;
     left: 10%;
@@ -44,15 +52,23 @@ td {
     border-left: 2px solid black;
 }
 
+.TicTacButton {
+    position: inherit;
+    object-position: unset;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+}
+
 .endgame {
     display: none;
     width: 200px;
     top: 120px;
     background-color: rgba(205, 133, 63, 0.8);
-    position: absolute;
+    position: relative;
     left: 50%;
     margin-left: -100px;
-    padding-top: 50px;
+    padding-top: 49px;
     padding-bottom: 50px;
     text-align: center;
     border-radius: 5px;
