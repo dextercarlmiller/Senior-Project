@@ -6,12 +6,18 @@ const cells = document.querySelectorAll('.cell');
 startGame();
 
 function startGame() {
+    /*  Construct the board to be empty, start with player 1, 
+    the buttons are listening for click and switches turn after
+    each click. 
+    */
     board = [];
     turnValue = 1;
     document.querySelector(".endgame").style.display = "none";
+    //board
     for (var i = 0; i < 10; i++) {
         temp = board.push(i);
     }
+    //buttons
     for (var i = 0; i < 9; i++) {
         cells[i].innerText = '';
         cells[i].style.removeProperty('background-color');
@@ -29,19 +35,18 @@ function playerturn(box) {
 
 
 }
-
-function turn(boxId, player) {
-    board[boxId] = player;
-    console.log(board)
-    console.log(turnValue)
-
-    document.getElementById(boxId).innerText = player;
-    document.getElementById(boxId).removeEventListener('click',playerturn,true)
+function SwitchPlayer(player){
     if (player == player1){
         turnValue = 2;
     }
     else{
         turnValue = 1;
-    }
-    console.log(turnValue)
+    }    
+}
+
+function turn(boxId, player) {
+    board[boxId] = player;
+    document.getElementById(boxId).innerText = player;
+    document.getElementById(boxId).removeEventListener('click',playerturn,true)
+    SwitchPlayer(player);
 }
