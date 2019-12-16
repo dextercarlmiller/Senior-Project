@@ -1,4 +1,5 @@
-var board = []
+var board = [];
+var Win = false;
 const player1 = "X";
 const player2 = "O";
 var turnValue = 1;
@@ -11,6 +12,7 @@ function startGame() {
     each click. 
     */
     board = [];
+    Win = false;
     turnValue = 1;
     //board
     for (var i = 0; i < 10; i++) {
@@ -27,48 +29,67 @@ function startGame() {
 function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
-    }
-    else{
+    } else {
         turn(box.target.id, player2)
     }
-
-
 }
-function SwitchPlayer(player){
-    if (player == player1){
+
+function SwitchPlayer(player) {
+    if (player == player1) {
         turnValue = 2;
-    }
-    else{
+    } else {
         turnValue = 1;
-    }    
+    }
 }
 
 function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
-    document.getElementById(boxId).removeEventListener('click',playerturn,true)
-    SwitchPlayer(player);
-    console.log(board);
+    document.getElementById(boxId).removeEventListener('click', playerturn, true)
     checkWin();
+    SwitchPlayer(player);
 }
-function checkWin(){
+
+function BoardFull() {
+    var j = 0;
+    var isfull = false;
+    for (var i = 1; i < board.length; i++) {
+        if (board[i] == "X" || board[i] == "O") {
+            j++;
+        }
+    }
+    if (j == 9) {
+        isfull = true;
+    }
+    return isfull;
+}
+
+function checkWin() {
     //horizontal
-    for (var i = 1; i < 9; i= i+3){
-        if (board[i] == board[i+1] && board[i] == board[i+2]){
-            console.log("There is a win");
+    for (var i = 1; i < 9; i = i + 3) {
+        if (board[i] == board[i + 1] && board[i] == board[i + 2]) {
+            alert(board[i] + " is the Winner!");
+            Win = true;
         }
     }
     //vertical
-    for (var i = 1; i < 4; i++){
-        if (board[i] == board[i+3] && board[i] == board[i+6]){
-            console.log("There is a win");
+    for (var i = 1; i < 4; i++) {
+        if (board[i] == board[i + 3] && board[i] == board[i + 6]) {
+            alert(board[i] + " is the Winner!");
+            Win = true;
         }
     }
     //diagonal
-    if (board[1] == board[5] && board[5] == board[9]){
-        console.log("There is a win");
-        }
-    if (board[3] == board[5] && board[5] == board[7]){
-        console.log("There is a win");
+    if (board[1] == board[5] && board[5] == board[9]) {
+        alert(board[1] + " is the Winner!");
+        Win = true;
+    }
+    if (board[3] == board[5] && board[5] == board[7]) {
+        alert(board[3] + " is the Winner!");
+        Win = true;
+    }
+    //cats game
+    if (BoardFull() && !Win) {
+        alert("Cats Game!");
     }
 }
