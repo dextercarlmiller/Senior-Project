@@ -12,7 +12,6 @@ function startGame() {
     */
     board = [];
     turnValue = 1;
-    document.querySelector(".endgame").style.display = "none";
     //board
     for (var i = 0; i < 10; i++) {
         temp = board.push(i);
