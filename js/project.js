@@ -49,4 +49,27 @@ function turn(boxId, player) {
     document.getElementById(boxId).innerText = player;
     document.getElementById(boxId).removeEventListener('click',playerturn,true)
     SwitchPlayer(player);
+    console.log(board);
+    checkWin();
+}
+function checkWin(){
+    //horizontal
+    for (var i = 1; i < 9; i= i+3){
+        if (board[i] == board[i+1] && board[i] == board[i+2]){
+            console.log("There is a win");
+        }
+    }
+    //vertical
+    for (var i = 1; i < 4; i++){
+        if (board[i] == board[i+3] && board[i] == board[i+6]){
+            console.log("There is a win");
+        }
+    }
+    //diagonal
+    if (board[1] == board[5] && board[5] == board[9]){
+        console.log("There is a win");
+        }
+    if (board[3] == board[5] && board[5] == board[7]){
+        console.log("There is a win");
+    }
 }
