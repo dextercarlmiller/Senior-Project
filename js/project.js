@@ -45,8 +45,6 @@ function turn(boxId, player) {
 
 function CompTurn() {
     console.log(board);
-    console.log(turnValue);
-    console.log(board[3]);
 
 }
 

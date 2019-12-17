@@ -3,9 +3,12 @@ a {
 }
 
 .TicTacToe {
-    width: 310px;
-    height: 357px;
     margin: auto;
+    object-position: center;
+    /* margin-right: 12.5%; */
+    width: 308px;
+    /* margin-left: 12.5%; */
+    display: block;
 }
 
 tr {
@@ -31,11 +34,9 @@ td {
 .boardTable {
     border-collapse: collapse;
     position: inherit;
-    margin: inherit;
+
     width: 308px;
     height: 308px;
-    left: 10%;
-    right: 10%;
 }
 
 .boardTable tr:first-child {
@@ -53,16 +54,21 @@ td {
 .boardTable tr td:last-child {
     border-left: 2px solid black;
 }
-
+.TicTacButton , .TicTacComp {
+    display: inline-block;
+    margin-top: 1%;
+}
 .TicTacButton {
-    width: 40%;
-    margin-left: 30%;
-    margin-right: 30%;
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 24px;
     padding-right: 24px;
-    margin-top: 1%;
-    margin-bottom: 89%;
-    height: 10%;
+    margin-left: 12%;
+}
+.TicTacComp {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-right: 10%;
 }
