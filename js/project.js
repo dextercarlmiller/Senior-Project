@@ -24,11 +24,13 @@ function startGame() {
         cells[i].addEventListener('click', playerturn, true);
     }
 }
-function endGame(){
-    for( var i = 0; i < 9; i++){
+
+function endGame() {
+    for (var i = 0; i < 9; i++) {
         cells[i].removeEventListener('click', playerturn, true);
     }
 }
+
 function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
@@ -41,9 +43,10 @@ function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
     document.getElementById(boxId).removeEventListener('click', playerturn, true)
-    AlertWinner(board,player);
+    AlertWinner(board, player);
     SwitchPlayer(player);
 }
+
 function SwitchPlayer(player) {
     if (player == player1) {
         turnValue = 2;
@@ -66,12 +69,12 @@ function BoardFull(board) {
     return isfull;
 }
 //Returns true if there is a win
-function checkWin(board,player) {
+function checkWin(board, player) {
     Win = false;
     //horizontal
     for (var i = 0; i < 8; i = i + 3) {
         if (board[i] == board[i + 1] && board[i] == board[i + 2]) {
-            if(board[i] == player){
+            if (board[i] == player) {
                 Win = true;
                 return Win;
             }
@@ -80,7 +83,7 @@ function checkWin(board,player) {
     //vertical
     for (var i = 0; i < 3; i++) {
         if (board[i] == board[i + 3] && board[i] == board[i + 6]) {
-            if(board[i] == player){
+            if (board[i] == player) {
                 Win = true;
                 return Win;
             }
@@ -88,34 +91,35 @@ function checkWin(board,player) {
     }
     //diagonal
     if (board[0] == board[4] && board[4] == board[8]) {
-        if(board[i] == player){
+        if (board[0] == player) {
             Win = true;
             return Win;
         }
     }
     if (board[2] == board[4] && board[4] == board[6]) {
-        if(board[i] == player){
+        if (board[2] == player) {
             Win = true;
             return Win;
         }
     }
-return Win;
+    return Win;
 }
 //Returns true if there is a cats game
-function checkCat(board,player) {
+function checkCat(board, player) {
     //cats game
-    if (BoardFull(board) && !checkWin(board,player)) {
+    if (BoardFull(board) && !checkWin(board, player)) {
         return true;
     } else {
         return false;
     }
 }
-function AlertWinner(board,player){
-    if (checkWin(board,player)){
+
+function AlertWinner(board, player) {
+    if (checkWin(board, player)) {
         alert(player + " is the winner!")
         endGame();
     }
-    if (checkCat(board,player)){
+    if (checkCat(board, player)) {
         alert("It's a Draw!");
         endGame();
     }
@@ -123,14 +127,16 @@ function AlertWinner(board,player){
 
 function CompTurn() {
     console.log(board);
-    console.log("Player"+turnValue +" Turn");
-    
+    console.log("Player" + turnValue + " Turn");
+
 }
-function score(board){
+
+function score(board) {
     checkWin(board)
 }
-function maxTurn(board,player){
-    if (checkWin(board,player)){
+
+function maxTurn(board, player) {
+    if (checkWin(board, player)) {
         return "Winner";
     }
 }
