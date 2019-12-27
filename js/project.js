@@ -128,15 +128,26 @@ function AlertWinner(board, player) {
 function CompTurn() {
     console.log(board);
     console.log("Player" + turnValue + " Turn");
-
+    maxTurn(board,turnValue);
 }
 
-function score(board) {
-    checkWin(board)
+function score(board,max,min) {
+    if (checkWin(board,max)){
+        return 10;
+    }
+    if (checkWin(board,min)){
+        return -10;
+    }
+    if (checkCat(board,max)){
+        return 0;
+    }
 }
 
 function maxTurn(board, player) {
-    if (checkWin(board, player)) {
-        return "Winner";
-    }
+    max = player; 
+    min = SwitchPlayer(player);
+    ScoreValue = score(board,max,min);
+    moves = [];
+    board.forEach(Number => (moves.push(board[Number])));   
+    console.log(moves);
 }
