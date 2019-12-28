@@ -54,6 +54,13 @@ function SwitchPlayer(player) {
         turnValue = 1;
     }
 }
+function CompSwitchTurn(player){
+    if (player == player1) {
+        return player2;
+    } else {
+        return player1;
+    }
+}
 //Returns true if the board is full (for cat game)
 function BoardFull(board) {
     var j = 0;
@@ -143,11 +150,19 @@ function score(board,max,min) {
     }
 }
 
-function maxTurn(board, player) {
+function maxTurn(compBoard, player) {
     max = player; 
-    min = SwitchPlayer(player);
-    ScoreValue = score(board,max,min);
+    min = CompSwitchTurn(player);
+    console.log(max);
+    console.log(min);
+    ScoreValue = 0;
+    ScoreValue = score(compBoard,max,min);
+    console.log(ScoreValue);
     moves = [];
-    board.forEach(Number => (moves.push(board[Number])));   
+    for (var i=0; i<compBoard.length;i++){
+        if (compBoard[i] == Number){
+            moves.push(compBoard[i]);
+        }
+    }  
     console.log(moves);
 }
