@@ -54,13 +54,6 @@ function SwitchPlayer(player) {
         turnValue = 1;
     }
 }
-function CompSwitchTurn(player){
-    if (player == player1) {
-        return player2;
-    } else {
-        return player1;
-    }
-}
 //Returns true if the board is full (for cat game)
 function BoardFull(board) {
     var j = 0;
@@ -134,35 +127,51 @@ function AlertWinner(board, player) {
 
 function CompTurn() {
     console.log(board);
-    console.log("Player" + turnValue + " Turn");
-    maxTurn(board,turnValue);
+    console.log("Player " + turnValue + " Turn");
+    miniMax(board,turnValue);
 }
 
 function score(board,max,min) {
     if (checkWin(board,max)){
-        return 10;
+        return 1;
     }
     if (checkWin(board,min)){
-        return -10;
+        return -1;
     }
     if (checkCat(board,max)){
         return 0;
     }
 }
-
-function maxTurn(compBoard, player) {
-    max = player; 
-    min = CompSwitchTurn(player);
-    console.log(max);
-    console.log(min);
-    ScoreValue = 0;
-    ScoreValue = score(compBoard,max,min);
-    console.log(ScoreValue);
+function miniMax(board,player){
+    if (player == 1){
+        max = "X";
+        min = "O";
+    } else {
+        min = "X";
+        max = "O";
+    }
+    maxTurn(board,max,min);
+}
+function maxTurn(compBoard,max,min) {
+    if (checkWin(compBoard,max)){
+        return score(compBoard,max,min)
+    }
     moves = [];
-    for (var i=0; i<compBoard.length;i++){
-        if (compBoard[i] == Number){
+    for (var i = 0; i<compBoard.length;i++){
+        if (Number(compBoard[i])){
             moves.push(compBoard[i]);
         }
-    }  
+    }
     console.log(moves);
+    for each move in moves{
+        
+    }
+}
+function minTurn(compBoard,max,min){
+    bestScore = -1;
+    for(var i = 0; i < moves.length; i++){
+        if (score(compBoard[move[i]],max,min) <= bestScore){
+            
+        }
+    }
 }
