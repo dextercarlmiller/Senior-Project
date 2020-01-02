@@ -135,10 +135,10 @@ function score(board,max,min) {
     if (checkWin(board,max)){
         return 1;
     }
-    if (checkWin(board,min)){
+    else if (checkWin(board,min)){
         return -1;
     }
-    if (checkCat(board,max)){
+    else if (checkCat(board,max)){
         return 0;
     }
 }
@@ -153,8 +153,14 @@ function miniMax(board,player){
     maxTurn(board,max,min);
 }
 function maxTurn(compBoard,max,min) {
-    if (checkWin(compBoard,max)){
-        return score(compBoard,max,min)
+    if (checkWin(board,max)){
+        return 1;
+    }
+    else if (checkWin(board,min)){
+        return -1;
+    }
+    else if (checkCat(board,max)){
+        return 0;
     }
     //This fills the availableSpots array with empty spaces
     availableSpots = [];
@@ -171,8 +177,8 @@ function maxTurn(compBoard,max,min) {
         move.index = compBoard[availableSpots[i]];
         compBoard[availableSpots[i]] = max;
 
-        var result = minTurn(board,max,min);
-        move.score = result;
+        var result = minTurn(compBoard,max,min);
+        move.score = result.score;
 
         compBoard[availableSpots[i]] = move.index;
 
@@ -181,17 +187,23 @@ function maxTurn(compBoard,max,min) {
     console.log(moves);
     var bestMove;
     bestScore = -10;
-    for (var i = 0; i <= moves.length;i++){
+    for (var i = 0; i < moves.length;i++){
         if (moves[i].score > bestScore) {
             bestScore = moves[i].score;
             bestMove = i;
         }
     }
-    console.log(moves[bestMove]); 
+    return console.log(moves[bestMove]); 
 }
 function minTurn(compBoard,max,min){
-    if (checkWin(compBoard,min)){
-        return score(compBoard,max,min)
+    if (checkWin(board,max)){
+        return 1;
+    }
+    else if (checkWin(board,min)){
+        return -1;
+    }
+    else if (checkCat(board,max)){
+        return 0;
     }
     //This fills the availableSpots array with empty spaces
     availableSpots = [];
@@ -207,9 +219,9 @@ function minTurn(compBoard,max,min){
         //for each move, index the move, and fill the move with max
         move.index = compBoard[availableSpots[i]];
         compBoard[availableSpots[i]] = max;
-
-        var result = maxTurn(board,max,min);
-        console.log(result.score);
+        console.log(maxTurn(compBoard,max,min));
+        var result = maxTurn(compBoard,max,min);
+        console.log(result);
         move.score = result;
 
         compBoard[availableSpots[i]] = move.index;
@@ -219,11 +231,11 @@ function minTurn(compBoard,max,min){
     console.log(moves);  
     var bestMove;
     bestScore = 10;
-    for (var i = 0; i <= moves.length;i++){
-        if (moves[i].score > bestScore) {
+    for (var i = 0; i < moves.length;i++){
+        if (moves[i].score < bestScore) {
             bestScore = moves[i].score;
             bestMove = i;
         }
     }
-    console.log(moves[bestMove]); 
+    return moves[bestMove].index; 
 }  
