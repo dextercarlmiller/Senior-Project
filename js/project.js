@@ -127,35 +127,28 @@ function AlertWinner(board, player) {
 }
 
 function CompTurn() {
-    if (turnValue == 1){
-        player = player2;
-    }else{
-        player = player1;
+    bestmove = findBestMove(board, turnValue);
+    if (turnValue == 1) {
+        turn(bestmove, player1);
+    } else {
+        turn(bestmove, player2);
     }
-    bestmove = findBestMove(board,turnValue);
-    board[bestmove] = player;
-    document.getElementById(bestmove).innerText = player;
-    document.getElementById(bestmove).removeEventListener('click', playerturn, true)
-    AlertWinner(board,player);
-    SwitchPlayer(player);
-    console.log(bestmove);
 }
 
-function evaluate(board,max,min) {
-    if (checkWin(board,max)){
+function evaluate(board, max, min) {
+    if (checkWin(board, max)) {
         return 1;
-    }
-    else if (checkWin(board,min)){
+    } else if (checkWin(board, min)) {
         return -1;
-    }
-    else if (checkCat(board,max)){
+    } else if (checkCat(board, max)) {
         return 0;
     }
 }
-function findBestMove(board,player){
+
+function findBestMove(board, player) {
     bestValue = -10;
     bestmove = [];
-    if (player == 1){
+    if (player == 1) {
         max = true;
         min = false;
     } else {
@@ -164,16 +157,16 @@ function findBestMove(board,player){
     }
     //This fills the availableSpots array with empty spaces
     availableSpots = [];
-    for (var i = 0; i<board.length;i++){
-        if (Number(board[i])){
+    for (var i = 0; i < board.length; i++) {
+        if (Number(board[i])) {
             availableSpots.push(board[i]);
         }
     }
-    for (var i = 0; i < availableSpots.length; i++){
+    for (var i = 0; i < availableSpots.length; i++) {
         board[availableSpots[i]] = "X";
-        var moveValue = minimax(board,false);
+        var moveValue = minimax(board, false);
         board[availableSpots[i]] = availableSpots[i];
-        if (moveValue > bestValue){
+        if (moveValue > bestValue) {
             bestValue = moveValue;
             console.log(bestmove);
             bestmove.push(availableSpots[i]);
@@ -181,52 +174,53 @@ function findBestMove(board,player){
     }
     return bestmove[0];
 }
-function minimax(compBoard,isMax) {
-    if (isMax){
+
+function minimax(compBoard, isMax) {
+    if (isMax) {
         max = "X";
         min = "O";
-    }else{
+    } else {
         max = "O";
         min = "X";
     }
     //Returns the score if maximizer won or minimizer
-    var score = evaluate(compBoard,max,min);
-    if (score == 1){
+    var score = evaluate(compBoard, max, min);
+    if (score == 1) {
         return score;
     }
-    if (score == -1){
+    if (score == -1) {
         return score;
     }
-    if (score == 0){
+    if (score == 0) {
         return score;
     }
     //This fills the availableSpots array with empty spaces
     availableSpots = [];
-    for (var i = 0; i<compBoard.length;i++){
-        if (Number(compBoard[i])){
+    for (var i = 0; i < compBoard.length; i++) {
+        if (Number(compBoard[i])) {
             availableSpots.push(compBoard[i]);
         }
     }
     //If it's maximizer's move
-    if (isMax){
-    best = -10;
-    for (var i=0; i < availableSpots.length; i++){
-        compBoard[availableSpots[i]] = "X";
-        best = Math.max(best,minimax(compBoard,!isMax));
-        compBoard[availableSpots[i]] = availableSpots[i];
-    }
-    console.log(best);
-    return best;
+    if (isMax) {
+        best = -10;
+        for (var i = 0; i < availableSpots.length; i++) {
+            compBoard[availableSpots[i]] = "X";
+            best = Math.max(best, minimax(compBoard, !isMax));
+            compBoard[availableSpots[i]] = availableSpots[i];
+        }
+        console.log(best);
+        return best;
     }
     //If it's minimizers move 
     else {
-    best = 10;
-    for (var i=0; i<availableSpots.length;i++){
-        compBoard[availableSpots[i]] = "O";
-        best = Math.min(best,minimax(compBoard,isMax));
-        compBoard[availableSpots[i]] = availableSpots[i];
+        best = 10;
+        for (var i = 0; i < availableSpots.length; i++) {
+            compBoard[availableSpots[i]] = "O";
+            best = Math.min(best, minimax(compBoard, isMax));
+            compBoard[availableSpots[i]] = availableSpots[i];
+        }
+        console.log(best);
+        return best
     }
-    console.log(best);
-    return best
-}
 }
