@@ -13,7 +13,7 @@ function startGame() {
     */
     turnValue = 1;
     //board
-    board = [];
+    board = Array();
     for (var i = 0; i < 9; i++) {
         temp = board.push(i);
     }
@@ -127,12 +127,8 @@ function AlertWinner(board, player) {
 }
 
 function CompTurn() {
-    console.log(board);
     let compBoard = board;
-    console.log(compBoard);
     let bestmove = findBestMove(compBoard, turnValue);
-    console.log(board);
-    console.log(compBoard)
     if (turnValue == 1) {
         turn(bestmove, player1);
     } else {
@@ -151,14 +147,12 @@ function evaluate(compBoard, max, min) {
 }
 
 function findBestMove(compBoard, player) {
-    let bestValue = -10;
+    let bestValue = -Infinity;
     bestmove = [];
     if (player == 1) {
-        max = true;
-        min = false;
+        var max = "X";
     } else {
-        min = true;
-        max = false;
+        var max = "O";
     }
     //This fills the availableSpots array with empty spaces
     let availableSpots = [];
@@ -169,30 +163,29 @@ function findBestMove(compBoard, player) {
     }
     //This is the maximizer's first move
     for (var i = 0; i < availableSpots.length; i++) {
-        compBoard[availableSpots[i]] = "X";
-        let moveValue = minimax(compBoard, false);
+        compBoard[availableSpots[i]] = max;
+        let moveValue = Math.max(bestValue, minimax(compBoard, false, max));
+        console.log(moveValue);
         compBoard[availableSpots[i]] = availableSpots[i];
-        console.log(availableSpots[i]);
-        console.log(compBoard);
         if (moveValue > bestValue) {
             bestValue = moveValue;
             bestmove.push(availableSpots[i]);
         }
+        console.log(availableSpots[i]);
     }
-    let FinalMove = bestmove[0];
+    let FinalMove = bestmove[bestmove.length - 1];
+    console.log(bestmove);
     return FinalMove;
 }
 
-function minimax(minimaxBoard, isMax) {
-    if (isMax) {
-        max = "X";
-        min = "O";
+function minimax(minimaxBoard, isMax, MaxValue) {
+    if (MaxValue == "X") {
+        var MinValue = "O";
     } else {
-        max = "O";
-        min = "X";
+        var MinValue = "X";
     }
     //Returns the score if maximizer won or minimizer
-    var score = evaluate(minimaxBoard, max, min);
+    let score = evaluate(minimaxBoard, MaxValue, MinValue);
     if (score == 1) {
         return score;
     }
@@ -211,26 +204,28 @@ function minimax(minimaxBoard, isMax) {
     }
     //If it's maximizer's move
     if (isMax) {
-        best = -10;
+        let best = -Infinity;
         for (var i = 0; i < availableSpots.length; i++) {
-            minimaxBoard[availableSpots[i]] = "X";
-            best = Math.max(best, minimax(minimaxBoard, false));
+            minimaxBoard[availableSpots[i]] = MaxValue;
+            var moveValue = Math.max(best, minimax(minimaxBoard, false, MaxValue));
             minimaxBoard[availableSpots[i]] = availableSpots[i];
-            console.log(availableSpots[i]);
-            console.log(minimaxBoard);
+            if (moveValue > best) {
+                best = moveValue;
+            }
         }
         return best;
     }
     //If it's minimizers move 
     else {
-        best = 10;
+        let best = Infinity;
         for (var i = 0; i < availableSpots.length; i++) {
-            minimaxBoard[availableSpots[i]] = "O";
-            best = Math.min(best, minimax(minimaxBoard, true));
+            minimaxBoard[availableSpots[i]] = MinValue;
+            var moveValue = Math.min(best, minimax(minimaxBoard, true, MaxValue));
             minimaxBoard[availableSpots[i]] = availableSpots[i];
-            console.log(availableSpots[i]);
-            console.log(minimaxBoard);
+            if (moveValue < best) {
+                best = moveValue;
+            }
         }
-        return best
+        return best;
     }
 }
