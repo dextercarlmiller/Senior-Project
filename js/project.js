@@ -41,7 +41,6 @@ function playerturn(box) {
 
 function turn(boxId, player) {
     board[boxId] = player;
-    console.log(board);
     document.getElementById(boxId).innerText = player;
     document.getElementById(boxId).removeEventListener('click', playerturn, true)
     AlertWinner(board, player);
@@ -144,9 +143,10 @@ function evaluate(compBoard, max, min) {
     } 
 }
 function findBestMove(compBoard, player) {
-    let bestValue = -Infinity;
+    let bestValue = -1000;
     let depth = 0;
     bestmove = [];
+    bestscore = [];
     if (player == 1) {
         var max = "X";
     } else {
@@ -155,7 +155,7 @@ function findBestMove(compBoard, player) {
     //This fills the availableSpots array with empty spaces
     let availableSpots = [];
     for (var i = 0; i < compBoard.length; i++) {
-        if (Number(compBoard[i])) {
+        if (Number.isInteger(compBoard[i])) {
             availableSpots.push(compBoard[i]);
         }
     }
@@ -164,15 +164,11 @@ function findBestMove(compBoard, player) {
         compBoard[availableSpots[i]] = max;
         let moveValue = Math.max(bestValue, minimax(compBoard, false, max,depth + 1));
         compBoard[availableSpots[i]] = availableSpots[i];
-        if (moveValue > bestValue) {
+        if (moveValue > bestValue){
             bestValue = moveValue;
             bestmove.push(availableSpots[i]);
         }
-        console.log("Score " + moveValue);
-        console.log("Spot   "+availableSpots[i]);
     }
-    console.log(bestValue);
-    console.log(bestmove);
     let FinalMove = bestmove[bestmove.length - 1];
     return FinalMove;
 }
@@ -187,17 +183,17 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
     //This fills the availableSpots array with empty spaces
     let availableSpots = [];
     for (var i = 0; i < minimaxBoard.length; i++) {
-        if (Number(minimaxBoard[i])) {
+        if (Number.isInteger(minimaxBoard[i])) {
             availableSpots.push(minimaxBoard[i]);
         }
     }
     //Returns the score if maximizer won or minimizer
     let score = evaluate(minimaxBoard, MaxValue, MinValue);
     if (score == 10) {
-        return score - depth;
+        return (score - depth);
     }
     if (score == -10) {
-        return score + depth;
+        return (score + depth);
     }
     if (availableSpots.length == 0){
         return 0;
