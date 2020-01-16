@@ -4,9 +4,9 @@ const player1 = "X";
 const player2 = "O";
 var turnValue = 1;
 const cells = document.querySelectorAll(".cell")
-startGame();
+startTicTacToe();
 
-function startGame() {
+function startTicTacToe() {
     /*  Construct the board to be empty, start with player 1, 
     the buttons are listening for click and switches turn after
     each click. 
@@ -140,8 +140,9 @@ function evaluate(compBoard, max, min) {
         return 10;
     } else if (checkWin(compBoard, min)) {
         return -10;
-    } 
+    }
 }
+
 function findBestMove(compBoard, player) {
     let bestValue = -1000;
     let depth = 0;
@@ -162,9 +163,9 @@ function findBestMove(compBoard, player) {
     //This is the maximizer's first move
     for (var i = 0; i < availableSpots.length; i++) {
         compBoard[availableSpots[i]] = max;
-        let moveValue = Math.max(bestValue, minimax(compBoard, false, max,depth + 1));
+        let moveValue = Math.max(bestValue, minimax(compBoard, false, max, depth + 1));
         compBoard[availableSpots[i]] = availableSpots[i];
-        if (moveValue > bestValue){
+        if (moveValue > bestValue) {
             bestValue = moveValue;
             bestmove.push(availableSpots[i]);
         }
@@ -179,7 +180,7 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
     } else {
         var MinValue = "X";
     }
-    
+
     //This fills the availableSpots array with empty spaces
     let availableSpots = [];
     for (var i = 0; i < minimaxBoard.length; i++) {
@@ -195,7 +196,7 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
     if (score == -10) {
         return (score + depth);
     }
-    if (availableSpots.length == 0){
+    if (availableSpots.length == 0) {
         return 0;
     }
     //If it's maximizer's move
@@ -203,7 +204,7 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
         var best = -1000;
         for (var i = 0; i < availableSpots.length; i++) {
             minimaxBoard[availableSpots[i]] = MaxValue;
-            var moveValue = minimax(minimaxBoard, false, MaxValue,depth + 1);
+            var moveValue = minimax(minimaxBoard, false, MaxValue, depth + 1);
             minimaxBoard[availableSpots[i]] = availableSpots[i];
             if (moveValue > best) {
                 best = moveValue;
