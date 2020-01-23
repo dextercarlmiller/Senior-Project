@@ -160,7 +160,7 @@ function findBestMove(compBoard, player) {
             availableSpots.push(compBoard[i]);
         }
     }
-    //This is the maximizer's first move
+    //This is the maximizer's first move (start recursion)
     for (var i = 0; i < availableSpots.length; i++) {
         compBoard[availableSpots[i]] = max;
         let moveValue = Math.max(bestValue, minimax(compBoard, false, max, depth + 1));
