@@ -212,7 +212,7 @@
             }
           },
           "title": "Education",
-          "text": "<b>Indiana Tech University<br>Major: B.S. Computer Science<br>Minor: Mathematics</b>",
+          "text": "<b>Indiana Tech<br>Major: B.S. Computer Science<br>Minor: Mathematics</b>",
           "buttons": "<a data-app-btn=\"true\" class=\"btn btn-primary\" href=\"https://mobirise.com\" data-toolbar=\"-mbrBtnMove\">MORE</a>",
           "_tags": [
             "Theme"
@@ -432,7 +432,7 @@
             "Theme"
           ],
           "text": "FOLLOW ME",
-          "icons": "<a data-app-btn=\"true\" class=\"btn btn-social btn-black\" title=\"Twitter\" target=\"_blank\" href=\"https://twitter.com/dextercarlmiler\" data-toolbar=\"-mbrBtnAdd,-mbrBtnMove,-mbrFonts,-mbrFontSize,-mbrBtnColor\"><i class=\"socicon socicon-twitter\"></i></a>       <a data-app-btn=\"true\" class=\"btn btn-social btn-black\" title=\"LinkedIn\" target=\"_blank\" href=\"https://www.linkedin.com/in/dextermiller2020\" data-toolbar=\"-mbrBtnAdd,-mbrBtnMove,-mbrFonts,-mbrFontSize,-mbrBtnColor\"><i class=\"socicon socicon-linkedin\"></i></a>   ",
+          "icons": "<a data-app-btn=\"true\" class=\"btn btn-social btn-black\" title=\"Twitter\" target=\"_blank\" href=\"https://twitter.com/mobirise\" data-toolbar=\"-mbrBtnAdd,-mbrBtnMove,-mbrFonts,-mbrFontSize,-mbrBtnColor\"><i class=\"socicon socicon-twitter\"></i></a>       <a data-app-btn=\"true\" class=\"btn btn-social btn-black\" title=\"LinkedIn\" target=\"_blank\" href=\"https://www.linkedin.com/in/mobirise\" data-toolbar=\"-mbrBtnAdd,-mbrBtnMove,-mbrFonts,-mbrFontSize,-mbrBtnColor\"><i class=\"socicon socicon-linkedin\"></i></a>   ",
           "_name": "social-buttons4",
           "_anchor": "social-buttons4-j"
         },
@@ -442,7 +442,7 @@
             "showSubTitle": true,
             "labelsColor": "#ffffff",
             "paddingTop": "1",
-            "paddingBottom": "1",
+            "paddingBottom": "0",
             "bgImageRadio": false,
             "bgImage": "@THEME_PATH@/components/_images/jumbotron.jpg",
             "parallax": true,
@@ -453,7 +453,7 @@
             "overlayOpacity": 0.5
           },
           "title": "CONTACT ME",
-          "subtitle": "for questions, interest, or information",
+          "subtitle": "for questions, interest, or information!",
           "buttons": "<a data-app-btn=\"true\" type=\"submit\" class=\"btn btn-primary\" data-toolbar=\"-mbrLink,-mbrBtnAdd,-mbrBtnMove\">Send</a>",
           "form": {
             "action": "dexterm@dextermiller.com",
@@ -495,6 +495,26 @@
               "color": "#ffffff"
             }
           }
+        },
+        {
+          "_params": {
+            "paddingTop": 2,
+            "paddingBottom": 2,
+            "bgImageRadio": false,
+            "bgImage": "@THEME_PATH@/components/_images/jumbotron.jpg",
+            "parallax": true,
+            "bgColorRadio": true,
+            "bgColor": "#323232",
+            "overlay": true,
+            "overlayColor": "#444444",
+            "overlayOpacity": 0.8
+          },
+          "text": "Made with Mobirise",
+          "_tags": [
+            "Theme"
+          ],
+          "_name": "footer1",
+          "_anchor": "footer1-k"
         }
       ]
     }
