@@ -1,0 +1,31 @@
+#Connect4Title{
+    text-align: center;
+    scroll-margin: inherit;
+}
+.connecTable {
+    margin: 20px auto;
+    display: table;
+    width: 415px;
+    height: 360px;
+    padding: 10px;
+    border: 1px solid #0044aa;
+    background: solid #0077ee;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5); 
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    border-spacing: 5px 5px;
+}
+.connecTable tr td{
+    border: 1px solid black;
+}
+.cell{
+    display: table-cell;
+    background-color: #ffffff;
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    margin: 2px;
+}
