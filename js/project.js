@@ -3,7 +3,7 @@ var Win = false;
 const player1 = "X";
 const player2 = "O";
 var turnValue = 1;
-const cells = document.querySelectorAll(".cell")
+const cells = document.querySelectorAll(".celltictac")
 startTicTacToe();
 
 function startTicTacToe() {
