@@ -5,11 +5,8 @@ var gridboard = [[0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0]];
 var Winner = false; 
-const Red = "1";
-const Yellow = "2";
+var player = 1
 var turnValue = 1;
-const connectcells = document.querySelectorAll(".connectcell")
-
 function startconnect(){
     /*This is my constructor to reset the board and start a new game. 
     */
@@ -23,10 +20,29 @@ function startconnect(){
 }
 function selectColumn(column){
     console.log(column);
+    if (player==1){
+        gridboard[5][column] = 1;
+        player = 2;
+        //document.getElementById()
+    }
+    else{
+        gridboard[5][column] = 2;
+        player = 1;
+    }
     console.log(gridboard);
-    for (var i = 0; i<6; i++){
-        if (gridboard[i[column]] = 0 && gridboard[(i+1)[column]]){
-            gridboard[i[column]] = 1
+    refreshgridboard();
+}
+
+function refreshgridboard(){
+    for (var row = 0; row<6; row++){
+        for (var col=0;col<7;col++){
+            if (gridboard[row][col]==0){
+                document.getElementById("cell"+row+col).style.setProperty("background-color","#FFFFFF");
+            } else if (gridboard[row][col]==1) { 
+                document.getElementById("cell"+row+col).style.setProperty("background-color","#FFFF00");
+            } else if (gridboard[row][col]==2) { 
+                document.getElementById("cell"+row+col).style.setProperty("background-color","#FF0000");
+            }
         }
     }
 }
