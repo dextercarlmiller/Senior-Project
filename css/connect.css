@@ -19,7 +19,7 @@
 .connecTable tr td{
     border: 1px solid black;
 }
-.cell{
+.connectcell{
     display: table-cell;
     background-color: #ffffff;
     width: 50px;
