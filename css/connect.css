@@ -2,6 +2,12 @@
     text-align: center;
     scroll-margin: inherit;
 }
+.Connect4 {
+    margin: auto;
+    object-position: center;
+    display: block;
+    width: 415px;
+}
 .connecTable {
     margin: 20px auto;
     display: table;
@@ -31,4 +37,16 @@
 }
 .row{
     display: table-row;     
+}
+.ConnectButton {
+    display: inline-block;
+    margin-top: 1%;
+}    
+.ConnectButton{
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-left: 39%;
+    margin-right: 39%;
 }
