@@ -1,13 +1,15 @@
-#Connect4Title{
+#Connect4Title {
     text-align: center;
     scroll-margin: inherit;
 }
+
 .Connect4 {
     margin: auto;
     object-position: center;
     display: block;
     width: 415px;
 }
+
 .connecTable {
     margin: 20px auto;
     display: table;
@@ -17,15 +19,17 @@
     border: 1px solid #0044aa;
     background: fixed #0077ee;
     border-radius: 5px;
-    box-shadow: 1px 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 1px 3px rgba(0,0,0,0.5); 
-    -moz-box-shadow: 1px 3px rgba(0,0,0,0.5);
+    box-shadow: 1px 3px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 1px 3px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 1px 3px rgba(0, 0, 0, 0.5);
     border-spacing: 5px 5px;
 }
-.connecTable tr td{
+
+.connecTable tr td {
     border: 1px solid black;
 }
-.connectcell{
+
+.connectcell {
     display: table-cell;
     background-color: #ffffff;
     width: 50px;
@@ -35,18 +39,22 @@
     border-radius: 50%;
     margin: 2px;
 }
-.row{
-    display: table-row;     
+
+.row {
+    display: table-row;
 }
+
 .ConnectButton {
     display: inline-block;
     margin-top: 1%;
-}    
-.ConnectButton{
+}
+
+.ConnectButton {
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 24px;
     padding-right: 24px;
     margin-left: 39%;
     margin-right: 39%;
+    margin-bottom: 4%;
 }
