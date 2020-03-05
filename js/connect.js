@@ -10,26 +10,26 @@ var turnValue = 1;
 function startconnect(){
     /*This is my constructor to reset the board and start a new game. 
     */
-   turnValue = 1;
+   player = 1;
    gridboard = [[0,0,0,0,0,0,0],
    [0,0,0,0,0,0,0],
    [0,0,0,0,0,0,0],
    [0,0,0,0,0,0,0],
    [0,0,0,0,0,0,0],
    [0,0,0,0,0,0,0]];
+   refreshgridboard();
 }
 function selectColumn(column){
     console.log(column);
     if (player==1){
-        gridboard[5][column] = 1;
+        drop(column,player);
         player = 2;
         //document.getElementById()
     }
     else{
-        gridboard[5][column] = 2;
+        drop(column,player);
         player = 1;
     }
-    console.log(gridboard);
     refreshgridboard();
 }
 
@@ -45,4 +45,14 @@ function refreshgridboard(){
             }
         }
     }
+}
+
+function drop(col,player){
+    for (var row=5;row>=0;row--){
+        if (gridboard[row][col] == 0){
+            gridboard[row][col] = player;
+            break;
+        }
+    }
+    console.log(gridboard);
 }
