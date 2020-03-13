@@ -36,6 +36,7 @@ function selectColumn(column) {
         player = 1;
     }
     refreshgridboard();
+    checkConnectWin(gridboard);
 }
 
 function refreshgridboard() {
@@ -59,13 +60,20 @@ function drop(col, player) {
             break;
         }
     }
-    console.log(gridboard);
 }
 
 function checkConnectWin(gridboard) {
-    Winner = False;
-    for (var row = 0; row < 5; row++) {
-        gridboard[row][col];
+    Winner = false;
+    //diagonal in \ direction
+    for(row=0;row<5;row++){
+        for (col=0;col<5;col++){
+            if (gridboard[row][col] == gridboard[row+1][col+1] 
+                && gridboard[row+1][col+1] == gridboard[row+2][col+2]  
+                && gridboard[row+2][col+2] == gridboard[row+3][col+3] 
+                && gridboard[row+3][col+3] == gridboard[row+4][col+4]){
+                    console.log("There is a win!!!!!!!");
+            }
+        }
     }
 }
 
