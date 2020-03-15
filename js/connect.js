@@ -64,17 +64,55 @@ function drop(col, player) {
 
 function checkConnectWin(gridboard) {
     Winner = false;
-    //diagonal in \ direction
-    for(row=0;row<5;row++){
-        for (col=0;col<5;col++){
-            if (gridboard[row][col] == gridboard[row+1][col+1] 
-                && gridboard[row+1][col+1] == gridboard[row+2][col+2]  
-                && gridboard[row+2][col+2] == gridboard[row+3][col+3] 
-                && gridboard[row+3][col+3] == gridboard[row+4][col+4]){
-                    console.log("There is a win!!!!!!!");
-            }
+    //diagonal in - direction
+    for(row=0;row<6;row++){
+        for (col=0;col<4;col++){
+            if (gridboard[row][col] == gridboard[row][col+1] 
+                && gridboard[row][col+1] == gridboard[row][col+2]  
+                && gridboard[row][col+2] == gridboard[row][col+3]){
+                    if(gridboard[row][col] == (1||2)){
+                        Winner=true;
+                    }
+                }
+            }        
         }
+    //diagonal in | direction
+    for(row=0;row<3;row++){
+        for (col=0;col<7;col++){
+            if (gridboard[row][col] == gridboard[row+1][col] 
+                    && gridboard[row+1][col] == gridboard[row+2][col]  
+                    && gridboard[row+2][col] == gridboard[row+3][col]){
+                if(gridboard[row][col] == (1||2)){
+                        Winner=true;
+                }
+            }
+        }        
     }
+    //diagonal in \ direction
+        for(row=0;row<3;row++){
+            for (col=0;col<4;col++){
+                if (gridboard[row][col] == gridboard[row+1][col+1] 
+                        && gridboard[row+1][col+1] == gridboard[row+2][col+2]  
+                        && gridboard[row+2][col+2] == gridboard[row+3][col+3]){
+                    if(gridboard[row][col] == (1||2)){
+                            Winner=true;
+                    }
+                }
+            }        
+        }            
+    //diagonal in / direction
+        for(row=0;row<3;row++){
+            for (col=3;col<7;col++){
+                if (gridboard[row][col] == gridboard[row+1][col-1] 
+                        && gridboard[row+1][col-1] == gridboard[row+2][col-2]  
+                        && gridboard[row+2][col-2] == gridboard[row+3][col-3]){
+                    if(gridboard[row][col] == (1||2)){
+                        Winner=true;
+                    }
+                }
+            }        
+        }
+return Winner;            
 }
 
 function checkConnectDraw() {
