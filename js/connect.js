@@ -6,10 +6,9 @@ var gridboard = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
 ];
-var player = 1
-var turnValue = 1;
+var player = 1;
 
-//Constructor!
+//Constructor (starts a new game)
 function startconnect() {
     /*This is my constructor to reset the board and start a new game. 
      */
@@ -24,21 +23,23 @@ function startconnect() {
     ];
     refreshgridboard();
 }
-
 function selectColumn(column) {
+    console.log("it is "+player+" turn");
     console.log(column);
-    if (player == 1) {
+    console.log(!columnFull(column));
+    if(!columnFull(column)){
         drop(column, player);
-        player = 2;
-        //document.getElementById()
-    } else {
-        drop(column, player);
-        player = 1;
+        if (player == 1){
+            player = 2;
+        }
+        else{
+            player = 1;
+        }    
     }
     refreshgridboard();
-    checkConnectWin(gridboard);
+    AlertConnectWinner();
 }
-
+//updates the board of the correct color
 function refreshgridboard() {
     for (var row = 0; row < 6; row++) {
         for (var col = 0; col < 7; col++) {
@@ -52,16 +53,36 @@ function refreshgridboard() {
         }
     }
 }
-
+//returns true if the column is full
+function columnFull(column){
+    Full = false;
+    if (gridboard[0][column] == (1||2)){
+        Full = true;
+    }
+    return Full; 
+}
+//drops the play down the column
 function drop(col, player) {
     for (var row = 5; row >= 0; row--) {
         if (gridboard[row][col] == 0) {
             gridboard[row][col] = player;
-            break;
+            return;
         }
     }
 }
-
+//returns true if the board is full
+function checkConnectFull(gridboard){
+    Full = true; 
+    for (var row=0; row<5;row++){
+        for(var col=0;col<6;row++){
+            if (gridboard[row][col] == 0){
+                Full = false;
+            }
+        }
+    }
+    return Full;
+}
+//returns true if there is a win
 function checkConnectWin(gridboard) {
     Winner = false;
     //diagonal in - direction
@@ -114,16 +135,18 @@ function checkConnectWin(gridboard) {
         }
 return Winner;            
 }
-
-function checkConnectDraw() {
-
+//returns true if there is a draw
+function checkConnectDraw(gridboard) {
+    if (!checkConnectWin(gridboard)&&checkConnectFull(gridboard)){
+        draw = true; 
+    }
 }
-
+//alerts the page there is a winner or draw
 function AlertConnectWinner() {
-    if (checkConnectWin) {
-        //Alert winner
+    if (checkConnectWin(gridboard)) {
+        alert("There is the winner!")
     }
-    if (checkConnectDraw) {
-        //Alert Draw
-    }
+    // if (checkConnectDraw(gridboard)) {
+    //     alert("There is a Draw!");
+    
 }
