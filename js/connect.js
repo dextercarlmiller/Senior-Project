@@ -24,9 +24,6 @@ function startconnect() {
     refreshgridboard();
 }
 function selectColumn(column) {
-    console.log("it is "+player+" turn");
-    console.log(column);
-    console.log(!columnFull(column));
     if(!columnFull(column)){
         drop(column, player);
         if (player == 1){
@@ -54,10 +51,11 @@ function refreshgridboard() {
     }
 }
 //returns true if the column is full
-function columnFull(column){
-    Full = false;
-    if (gridboard[0][column] == (1||2)){
+function columnFull(columnselect){
+    if (gridboard[0][columnselect] == 1 || gridboard[0][columnselect] == 2){
         Full = true;
+    }else{
+        Full = false;
     }
     return Full; 
 }
