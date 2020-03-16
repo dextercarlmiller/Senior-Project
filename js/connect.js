@@ -7,11 +7,12 @@ var gridboard = [
     [0, 0, 0, 0, 0, 0, 0]
 ];
 var player = 1;
-
+const connectcells = document.querySelectorAll(".connectcell")
+startconnect();
 //Constructor (starts a new game)
 function startconnect() {
-    /*This is my constructor to reset the board and start a new game. 
-     */
+    //This is my constructor to reset the board and start a new game.
+    //board
     player = 1;
     gridboard = [
         [0, 0, 0, 0, 0, 0, 0],
@@ -21,9 +22,15 @@ function startconnect() {
         [0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0]
     ];
+    for (var row = 0; row < 6; row++) {
+        for (var col = 0; col < 7; col++){ 
+            document.getElementById(""+row+col).addEventListener("click",selectColumn,true);
+        }
+    }
     refreshgridboard();
 }
-function selectColumn(column) {
+function selectColumn(box) {
+    column = (box.target.id%10);
     if(!columnFull(column)){
         drop(column, player);
         if (player == 1){
@@ -34,18 +41,18 @@ function selectColumn(column) {
         }    
     }
     refreshgridboard();
-    AlertConnectWinner();
+    AlertConnectWinner(player);
 }
 //updates the board of the correct color
 function refreshgridboard() {
     for (var row = 0; row < 6; row++) {
         for (var col = 0; col < 7; col++) {
             if (gridboard[row][col] == 0) {
-                document.getElementById("cell" + row + col).style.setProperty("background-color", "#FFFFFF");
+                document.getElementById(""+row+col).style.setProperty("background-color", "#FFFFFF");
             } else if (gridboard[row][col] == 1) {
-                document.getElementById("cell" + row + col).style.setProperty("background-color", "#FFFF00");
+                document.getElementById(""+row + col).style.setProperty("background-color", "#FFFF00");
             } else if (gridboard[row][col] == 2) {
-                document.getElementById("cell" + row + col).style.setProperty("background-color", "#FF0000");
+                document.getElementById(""+row + col).style.setProperty("background-color", "#FF0000");
             }
         }
     }
@@ -140,11 +147,26 @@ function checkConnectDraw(gridboard) {
     }
 }
 //alerts the page there is a winner or draw
-function AlertConnectWinner() {
-    if (checkConnectWin(gridboard)) {
-        alert("There is the winner!")
+function AlertConnectWinner(player) {
+    var ConnectWinner = " "; 
+    if (player == 1){
+        ConnectWinner = "Red";
     }
-    // if (checkConnectDraw(gridboard)) {
-    //     alert("There is a Draw!");
-    
+    else{
+        ConnectWinner = "Yellow";
+    }   
+    if (checkConnectWin(gridboard)) {
+        alert(ConnectWinner+" is the winner!");
+        endconnect();
+    }
+    if (checkConnectDraw(gridboard)) {
+        alert("There is a Draw!");
+    }    
+}
+function endconnect(){
+    for (var row = 0; row < 6; row++) {
+        for (var col = 0; col < 7; col++){ 
+            document.getElementById(""+row+col).removeEventListener("click",selectColumn,true);
+        }
+    }
 }
