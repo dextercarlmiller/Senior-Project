@@ -32,7 +32,8 @@ function startconnect() {
 function selectColumn(box) {
     column = (box.target.id%10);
     if(!columnFull(column)){
-        drop(column, player);
+        console.log(gridboard)
+        drop(column, player, gridboard);
         if (player == 1){
             player = 2;
         }
@@ -67,10 +68,10 @@ function columnFull(columnselect){
     return Full; 
 }
 //drops the play down the column
-function drop(col, player) {
+function drop(col, player, connectboard) {
     for (var row = 5; row >= 0; row--) {
-        if (gridboard[row][col] == 0) {
-            gridboard[row][col] = player;
+        if (connectboard[row][col] == 0) {
+            connectboard[row][col] = player;
             return;
         }
     }
@@ -82,6 +83,7 @@ function checkConnectFull(gridboard){
         for(var col=0;col<6;row++){
             if (gridboard[row][col] == 0){
                 Full = false;
+                return Full;
             }
         }
     }
@@ -93,6 +95,9 @@ function checkConnectWin(gridboard) {
     //diagonal in - direction
     for(row=0;row<6;row++){
         for (col=0;col<4;col++){
+            console.log(row);
+            console.log(col);
+            console.log(gridboard)
             if (gridboard[row][col] == gridboard[row][col+1] 
                 && gridboard[row][col+1] == gridboard[row][col+2]  
                 && gridboard[row][col+2] == gridboard[row][col+3]){
@@ -147,12 +152,12 @@ function checkConnectDraw(gridboard) {
     }
 }
 //alerts the page there is a winner or draw
-function AlertConnectWinner(player) {
+function AlertConnectWinner(gridboard,player) {
     var ConnectWinner = " "; 
     if (player == 1){
         ConnectWinner = "Red";
-    }
-    else{
+        }
+        else{
         ConnectWinner = "Yellow";
     }   
     if (checkConnectWin(gridboard)) {
