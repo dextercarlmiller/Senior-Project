@@ -78,9 +78,10 @@ function drop(col, player, connectboard) {
 }
 //returns true if the board is full
 function checkConnectFull(gridboard){
+    console.log(gridboard[0][0]);
     for (var row=0; row<5;row++){
         for(var col=0;col<6;row++){
-            if (gridboard[row][col] == 0){
+            if(gridboard[row][col] == 0){
                 Full = false;
                 return Full;
             }
