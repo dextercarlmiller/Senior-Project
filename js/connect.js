@@ -32,7 +32,6 @@ function startconnect() {
 function selectColumn(box) {
     column = (box.target.id%10);
     if(!columnFull(column)){
-        console.log(gridboard)
         drop(column, player, gridboard);
         if (player == 1){
             player = 2;
@@ -42,7 +41,8 @@ function selectColumn(box) {
         }    
     }
     refreshgridboard();
-    AlertConnectWinner(player);
+    console.log(player);
+    AlertConnectWinner(gridboard,player);
 }
 //updates the board of the correct color
 function refreshgridboard() {
@@ -78,12 +78,14 @@ function drop(col, player, connectboard) {
 }
 //returns true if the board is full
 function checkConnectFull(gridboard){
-    Full = true; 
     for (var row=0; row<5;row++){
         for(var col=0;col<6;row++){
             if (gridboard[row][col] == 0){
                 Full = false;
                 return Full;
+            }
+            else{
+                Full = true;
             }
         }
     }
@@ -95,26 +97,25 @@ function checkConnectWin(gridboard) {
     //diagonal in - direction
     for(row=0;row<6;row++){
         for (col=0;col<4;col++){
-            console.log(row);
-            console.log(col);
-            console.log(gridboard)
             if (gridboard[row][col] == gridboard[row][col+1] 
                 && gridboard[row][col+1] == gridboard[row][col+2]  
                 && gridboard[row][col+2] == gridboard[row][col+3]){
-                    if(gridboard[row][col] == (1||2)){
+                    if((gridboard[row][col] == 1) || (gridboard[row][col] == 2)){
                         Winner=true;
+                        return Winner;
                     }
                 }
             }        
         }
     //diagonal in | direction
-    for(row=0;row<3;row++){
-        for (col=0;col<7;col++){
-            if (gridboard[row][col] == gridboard[row+1][col] 
-                    && gridboard[row+1][col] == gridboard[row+2][col]  
-                    && gridboard[row+2][col] == gridboard[row+3][col]){
-                if(gridboard[row][col] == (1||2)){
+        for(row=0;row<3;row++){
+            for (col=0;col<7;col++){
+                if (gridboard[row][col] == gridboard[row+1][col] 
+                        && gridboard[row+1][col] == gridboard[row+2][col]  
+                        && gridboard[row+2][col] == gridboard[row+3][col]){
+                    if((gridboard[row][col] == 1) || (gridboard[row][col] == 2)){
                         Winner=true;
+                        return Winner;
                 }
             }
         }        
@@ -125,8 +126,9 @@ function checkConnectWin(gridboard) {
                 if (gridboard[row][col] == gridboard[row+1][col+1] 
                         && gridboard[row+1][col+1] == gridboard[row+2][col+2]  
                         && gridboard[row+2][col+2] == gridboard[row+3][col+3]){
-                    if(gridboard[row][col] == (1||2)){
-                            Winner=true;
+                    if((gridboard[row][col] == 1) || (gridboard[row][col] == 2)){
+                        Winner=true;
+                        return Winner;
                     }
                 }
             }        
@@ -137,8 +139,9 @@ function checkConnectWin(gridboard) {
                 if (gridboard[row][col] == gridboard[row+1][col-1] 
                         && gridboard[row+1][col-1] == gridboard[row+2][col-2]  
                         && gridboard[row+2][col-2] == gridboard[row+3][col-3]){
-                    if(gridboard[row][col] == (1||2)){
+                    if((gridboard[row][col] == 1) || (gridboard[row][col] == 2)){
                         Winner=true;
+                        return Winner;
                     }
                 }
             }        
@@ -146,13 +149,17 @@ function checkConnectWin(gridboard) {
 return Winner;            
 }
 //returns true if there is a draw
-function checkConnectDraw(gridboard) {
-    if (!checkConnectWin(gridboard)&&checkConnectFull(gridboard)){
+function checkConnectDraw(Connectboard) {
+    console.log(Connectboard);
+    if (!checkConnectWin(Connectboard)&&checkConnectFull(Connectboard)){
         draw = true; 
+    }else{
+        draw = false;
     }
+    return draw;
 }
 //alerts the page there is a winner or draw
-function AlertConnectWinner(gridboard,player) {
+function AlertConnectWinner(ConnectBoard,player) {
     var ConnectWinner = " "; 
     if (player == 1){
         ConnectWinner = "Red";
@@ -160,11 +167,11 @@ function AlertConnectWinner(gridboard,player) {
         else{
         ConnectWinner = "Yellow";
     }   
-    if (checkConnectWin(gridboard)) {
+    if (checkConnectWin(ConnectBoard)) {
         alert(ConnectWinner+" is the winner!");
         endconnect();
     }
-    if (checkConnectDraw(gridboard)) {
+    if (checkConnectDraw(ConnectBoard)) {
         alert("There is a Draw!");
     }    
 }
