@@ -43,8 +43,12 @@ function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
     document.getElementById(boxId).removeEventListener('click', playerturn, true)
-    AlertWinner(board, player);
+    console.log(turnValue);
     SwitchPlayer(player);
+    console.log(turnValue);
+    document.getElementById("AlertWinner").innerText = ("Player Turn:" + player);
+
+
 }
 
 function SwitchPlayer(player) {
@@ -116,11 +120,11 @@ function checkCat(board, player) {
 
 function AlertWinner(board, player) {
     if (checkWin(board, player)) {
-        alert(player + " is the winner!")
+        fakalert(player);
         endGame();
     }
     if (checkCat(board, player)) {
-        alert("It's a Draw!");
+        fakedraw();
         endGame();
     }
 }
