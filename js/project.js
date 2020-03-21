@@ -34,8 +34,28 @@ function endGame() {
 function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
+        if(AlertWinner(board,player1)){
+            console.log("Winner");
+            document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
+            endGame();
+        }
+        if(AlertCat(board,player1)){
+            console.log("Cat");
+            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
+            endGame();
+        }
     } else {
         turn(box.target.id, player2)
+        if(AlertWinner(board,player2)){
+            console.log("Winner");
+            document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
+            endGame();
+        }
+        if(AlertCat(board,player2)){
+            console.log("Cat");
+            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
+            endGame();
+        }
     }
 }
 
@@ -43,12 +63,13 @@ function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
     document.getElementById(boxId).removeEventListener('click', playerturn, true)
-    console.log(turnValue);
     SwitchPlayer(player);
-    console.log(turnValue);
+    if(turnValue == 1){
+        player = player1;
+    } else {
+        player = player2;
+    }
     document.getElementById("AlertWinner").innerText = ("Player Turn:" + player);
-
-
 }
 
 function SwitchPlayer(player) {
@@ -118,15 +139,19 @@ function checkCat(board, player) {
     }
 }
 
-function AlertWinner(board, player) {
+function AlertWinner(board,player) {
     if (checkWin(board, player)) {
-        fakalert(player);
-        endGame();
+        gamewinnner = true;
+        return gamewinnner;
     }
+    return false; 
+}
+function AlertCat(board,player){
     if (checkCat(board, player)) {
-        fakedraw();
-        endGame();
+        catwinner = true;
+        return catwinner;
     }
+    return false;
 }
 
 function CompTurn() {
