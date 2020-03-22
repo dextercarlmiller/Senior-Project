@@ -1,13 +1,5 @@
-var gridboard = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-];
+var gridboard = [];
 var player = 1;
-const connectcells = document.querySelectorAll(".connectcell")
 startconnect();
 //Constructor (starts a new game)
 function startconnect() {
@@ -27,11 +19,15 @@ function startconnect() {
             document.getElementById(""+row+col).addEventListener("click",selectColumn,true);
         }
     }
+    document.getElementById("AlertConnectWinner").innerText = "Player Turn: Yellow";
     refreshgridboard();
 }
+//Drops player move in corresponding column and updates next player
+//Refresh display
+//Alerts if there is a winner
 function selectColumn(box) {
     column = (box.target.id%10);
-    if(!columnFull(column)){
+    if(!columnFull(gridboard, column)){
         drop(column, player, gridboard);
         if (player == 1){
             player = 2;
@@ -60,9 +56,9 @@ function refreshgridboard() {
     }
 }
 //returns true if the column is full
-function columnFull(columnselect){
+function columnFull(gridboard, columnselect){
     if (gridboard[0][columnselect] == 1 || gridboard[0][columnselect] == 2){
-        Full = true;
+        var Full = true;
     }else{
         Full = false;
     }
@@ -80,10 +76,11 @@ function drop(col, player, connectboard) {
 //returns true if the board is full
 function checkConnectFull(gridboard){
     for(var col = 0; col < 7; col++){
-        if(columnFull(col)){
+        if (gridboard[0][col] == 0){
+            var Full = false;
+            return Full;
+        }else {
             Full = true;
-        }else{
-            Full = false;
         }
     }
     return Full;
@@ -148,7 +145,7 @@ return Winner;
 //returns true if there is a draw
 function checkConnectDraw(Connectboard) {
     if (!checkConnectWin(Connectboard)&&checkConnectFull(Connectboard)){
-        draw = true; 
+        var draw = true; 
     }else{
         draw = false;
     }
@@ -169,8 +166,10 @@ function AlertConnectWinner(ConnectBoard,player) {
     }
     if (checkConnectDraw(ConnectBoard)) {
         document.getElementById("AlertConnectWinner").innerText = ("There is a Draw!");
+        endconnect();
     }    
 }
+//removes buttons (eventlisteners) on the board
 function endconnect(){
     for (var row = 0; row < 6; row++) {
         for (var col = 0; col < 7; col++){ 

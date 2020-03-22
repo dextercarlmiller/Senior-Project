@@ -6,6 +6,7 @@ var turnValue = 1;
 const cells = document.querySelectorAll(".celltictac");
 startTicTacToe();
 
+//constructor
 function startTicTacToe() {
     /*  Construct the board to be empty, start with player 1, 
     the buttons are listening for click and switches turn after
@@ -24,13 +25,13 @@ function startTicTacToe() {
         cells[i].addEventListener('click', playerturn, true);
     }
 }
-
+//destructor and removes event listener
 function endGame() {
     for (var i = 0; i < 9; i++) {
         cells[i].removeEventListener('click', playerturn, true);
     }
 }
-
+//player turn function
 function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
@@ -54,6 +55,7 @@ function playerturn(box) {
         }
     }
 }
+//computer turn function
 function ComputerTurn(box) {
     if (turnValue == 1) {
         turn(box, player1)
@@ -89,7 +91,7 @@ function turn(boxId, player) {
     }
     document.getElementById("AlertWinner").innerText = ("Player Turn:" + player);
 }
-
+//Switches player turn value
 function SwitchPlayer(player) {
     if (player == player1) {
         turnValue = 2;
@@ -156,7 +158,7 @@ function checkCat(board, player) {
         return false;
     }
 }
-
+//Returns true if a Win
 function AlertWinner(board,player) {
     if (checkWin(board, player)) {
         gamewinnner = true;
@@ -164,6 +166,7 @@ function AlertWinner(board,player) {
     }
     return false; 
 }
+//Returns true if a Draw
 function AlertCat(board,player){
     if (checkCat(board, player)) {
         catwinner = true;
@@ -171,12 +174,14 @@ function AlertCat(board,player){
     }
     return false;
 }
-
+//Computer Turn
 function CompTurn() {
     let compBoard = board;
     let bestmove = findBestMove(compBoard, turnValue);
     console.log(board);
     console.log(player);
+    console.log(checkWin(board,player1));
+    console.log(checkWin(board,player2))
     if(!checkWin(board,player)){
         if (turnValue == 1) {
             ComputerTurn(bestmove, player1);
