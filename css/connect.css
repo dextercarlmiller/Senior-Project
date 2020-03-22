@@ -2,6 +2,10 @@
     text-align: center;
     scroll-margin: inherit;
 }
+#AlertConnectWinner {
+    text-align: center;
+    scroll-margin: inherit;
+}
 
 .Connect4 {
     margin: auto;

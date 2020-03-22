@@ -35,13 +35,14 @@ function selectColumn(box) {
         drop(column, player, gridboard);
         if (player == 1){
             player = 2;
+            document.getElementById("AlertConnectWinner").innerText = "Player Turn: Red";
         }
         else{
             player = 1;
+            document.getElementById("AlertConnectWinner").innerText = "Player Turn: Yellow";
         }    
     }
     refreshgridboard();
-    console.log(player);
     AlertConnectWinner(gridboard,player);
 }
 //updates the board of the correct color
@@ -78,16 +79,11 @@ function drop(col, player, connectboard) {
 }
 //returns true if the board is full
 function checkConnectFull(gridboard){
-    console.log(gridboard[0][0]);
-    for (var row=0; row<5;row++){
-        for(var col=0;col<6;row++){
-            if(gridboard[row][col] == 0){
-                Full = false;
-                return Full;
-            }
-            else{
-                Full = true;
-            }
+    for(var col = 0; col < 7; col++){
+        if(columnFull(col)){
+            Full = true;
+        }else{
+            Full = false;
         }
     }
     return Full;
@@ -151,7 +147,6 @@ return Winner;
 }
 //returns true if there is a draw
 function checkConnectDraw(Connectboard) {
-    console.log(Connectboard);
     if (!checkConnectWin(Connectboard)&&checkConnectFull(Connectboard)){
         draw = true; 
     }else{
@@ -169,11 +164,11 @@ function AlertConnectWinner(ConnectBoard,player) {
         ConnectWinner = "Yellow";
     }   
     if (checkConnectWin(ConnectBoard)) {
-        alert(ConnectWinner+" is the winner!");
+        document.getElementById("AlertConnectWinner").innerText = (ConnectWinner+" is the winner!");
         endconnect();
     }
     if (checkConnectDraw(ConnectBoard)) {
-        alert("There is a Draw!");
+        document.getElementById("AlertConnectWinner").innerText = ("There is a Draw!");
     }    
 }
 function endconnect(){

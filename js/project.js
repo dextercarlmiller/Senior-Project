@@ -35,30 +35,48 @@ function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
         if(AlertWinner(board,player1)){
-            console.log("Winner");
             document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
             endGame();
         }
         if(AlertCat(board,player1)){
-            console.log("Cat");
             document.getElementById("AlertWinner").innerText = ("It's a Draw!");
             endGame();
         }
     } else {
         turn(box.target.id, player2)
         if(AlertWinner(board,player2)){
-            console.log("Winner");
             document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
             endGame();
         }
         if(AlertCat(board,player2)){
-            console.log("Cat");
             document.getElementById("AlertWinner").innerText = ("It's a Draw!");
             endGame();
         }
     }
 }
-
+function ComputerTurn(box) {
+    if (turnValue == 1) {
+        turn(box, player1)
+        if(AlertWinner(board,player1)){
+            document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
+            endGame();
+        }
+        if(AlertCat(board,player1)){
+            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
+            endGame();
+        }
+    } else {
+        turn(box, player2)
+        if(AlertWinner(board,player2)){
+            document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
+            endGame();
+        }
+        if(AlertCat(board,player2)){
+            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
+            endGame();
+        }
+    }
+}
 function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
@@ -157,10 +175,14 @@ function AlertCat(board,player){
 function CompTurn() {
     let compBoard = board;
     let bestmove = findBestMove(compBoard, turnValue);
-    if (turnValue == 1) {
-        turn(bestmove, player1);
-    } else {
-        turn(bestmove, player2);
+    console.log(board);
+    console.log(player);
+    if(!checkWin(board,player)){
+        if (turnValue == 1) {
+            ComputerTurn(bestmove, player1);
+        } else {
+            ComputerTurn(bestmove, player2);
+        }
     }
 }
 
