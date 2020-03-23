@@ -1,5 +1,4 @@
 var board = [];
-var Win = false;
 const player1 = "X";
 const player2 = "O";
 var turnValue = 1;
@@ -24,6 +23,7 @@ function startTicTacToe() {
         cells[i].style.removeProperty('background-color');
         cells[i].addEventListener('click', playerturn, true);
     }
+    document.getElementById("AlertWinner").innerText = "Player Turn: X";
 }
 //destructor and removes event listener
 function endGame() {
@@ -35,21 +35,21 @@ function endGame() {
 function playerturn(box) {
     if (turnValue == 1) {
         turn(box.target.id, player1)
-        if(AlertWinner(board,player1)){
+        if(AlertWinner(board)){
             document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
             endGame();
         }
-        if(AlertCat(board,player1)){
+        if(AlertCat(board)){
             document.getElementById("AlertWinner").innerText = ("It's a Draw!");
             endGame();
         }
     } else {
         turn(box.target.id, player2)
-        if(AlertWinner(board,player2)){
+        if(AlertWinner(board)){
             document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
             endGame();
         }
-        if(AlertCat(board,player2)){
+        if(AlertCat(board)){
             document.getElementById("AlertWinner").innerText = ("It's a Draw!");
             endGame();
         }
@@ -79,6 +79,7 @@ function ComputerTurn(box) {
         }
     }
 }
+//basic turn function for each player
 function turn(boxId, player) {
     board[boxId] = player;
     document.getElementById(boxId).innerText = player;
@@ -89,7 +90,7 @@ function turn(boxId, player) {
     } else {
         player = player2;
     }
-    document.getElementById("AlertWinner").innerText = ("Player Turn:" + player);
+    document.getElementById("AlertWinner").innerText = ("Player Turn: " + player);
 }
 //Switches player turn value
 function SwitchPlayer(player) {
@@ -150,39 +151,46 @@ function checkWin(board, player) {
     return Win;
 }
 //Returns true if there is a cats game
-function checkCat(board, player) {
-    //cats game
-    if (BoardFull(board) && !checkWin(board, player)) {
+function AlertCat(board) {
+    if (BoardFull(board) && !AlertWinner(board)) {
         return true;
     } else {
         return false;
     }
 }
 //Returns true if a Win
-function AlertWinner(board,player) {
-    if (checkWin(board, player)) {
-        gamewinnner = true;
-        return gamewinnner;
+function AlertWinner(board) {
+    Win = false;
+    //horizontal
+    for (var i = 0; i < 8; i = i + 3) {
+        if (board[i] == board[i + 1] && board[i] == board[i + 2]) {
+                Win = true;
+                return Win;
+        }
     }
-    return false; 
-}
-//Returns true if a Draw
-function AlertCat(board,player){
-    if (checkCat(board, player)) {
-        catwinner = true;
-        return catwinner;
-    }
-    return false;
+    //vertical
+    for (var i = 0; i < 3; i++) {
+        if (board[i] == board[i + 3] && board[i] == board[i + 6]) {
+                Win = true;
+                return Win;
+            }
+        }
+    //diagonal
+    if (board[0] == board[4] && board[4] == board[8]) {
+            Win = true;
+            return Win;
+        }
+    if (board[2] == board[4] && board[4] == board[6]) {
+            Win = true;
+            return Win;
+        }
+    return Win;
 }
 //Computer Turn
 function CompTurn() {
     let compBoard = board;
     let bestmove = findBestMove(compBoard, turnValue);
-    console.log(board);
-    console.log(player);
-    console.log(checkWin(board,player1));
-    console.log(checkWin(board,player2))
-    if(!checkWin(board,player)){
+    if(!AlertWinner(board)){
         if (turnValue == 1) {
             ComputerTurn(bestmove, player1);
         } else {
@@ -190,7 +198,7 @@ function CompTurn() {
         }
     }
 }
-
+//scores the board 
 function evaluate(compBoard, max, min) {
     if (checkWin(compBoard, max)) {
         return 10;
@@ -198,7 +206,7 @@ function evaluate(compBoard, max, min) {
         return -10;
     }
 }
-
+//returns the best move
 function findBestMove(compBoard, player) {
     let bestValue = -1000;
     let depth = 0;
@@ -229,14 +237,13 @@ function findBestMove(compBoard, player) {
     let FinalMove = bestmove[bestmove.length - 1];
     return FinalMove;
 }
-
+//recursive function minimax
 function minimax(minimaxBoard, isMax, MaxValue, depth) {
     if (MaxValue == "X") {
         var MinValue = "O";
     } else {
         var MinValue = "X";
     }
-
     //This fills the availableSpots array with empty spaces
     let availableSpots = [];
     for (var i = 0; i < minimaxBoard.length; i++) {
