@@ -20,7 +20,7 @@ function startconnect() {
         }
     }
     document.getElementById("AlertConnectWinner").innerText = "Player Turn: Yellow";
-    refreshgridboard();
+    refreshgridboard(gridboard);
 }
 //Drops player move in corresponding column and updates next player
 //Refresh display
@@ -43,11 +43,11 @@ function selectColumn(box) {
             document.getElementById("AlertConnectWinner").innerText = "Player Turn: Yellow";
         }    
     }
-    refreshgridboard();
+    refreshgridboard(gridboard);
     AlertConnectWinner(gridboard,player);
 }
 //updates the board of the correct color
-function refreshgridboard() {
+function refreshgridboard(gridboard) {
     for (var row = 0; row < 6; row++) {
         for (var col = 0; col < 7; col++) {
             if (gridboard[row][col] == 0) {
@@ -71,12 +71,24 @@ function columnFull(gridboard, columnselect){
 }
 //drops the play down the column, returns updated board
 function drop(col, player, connectboard) {
-    let tempboard = connectboard;
     for (var row = 5; row >= 0; row--) {
-        if (tempboard[row][col] == 0) {
-            tempboard[row][col] = player;
-            console.log(tempboard);
-            return tempboard;
+        if (connectboard[row][col] == 0) {
+            connectboard[row][col] = player;
+            return connectboard;
+        }else{
+            //do nothing!
+        }
+    }
+}
+function comprefresh(player,tempboard){
+    for (var row = 0; row < 6; row++) {
+        for (var col = 0; col < 7; col++) {
+        if (tempboard[row][col] == player){
+            tempboard[row][col] = 0;
+        }
+        // if (tempboard[row][col] == 4){
+        //     tempboard[row][col] = 0;
+        // }
         }
     }
 }
@@ -185,8 +197,8 @@ function endconnect(){
     }
 }
 function ConnectComp(){
-best_column = alphabeta(gridboard,player);
-selectColumn(best_column);
+    best_column = alphabeta(gridboard,player+2);
+    selectColumn(best_column);
 }
 function alphabeta(theboard,alpha){
 
@@ -197,22 +209,29 @@ let valid_locations = [];
             valid_locations.push(i);
         }
     }
+//copy theboard to temp board
+let tempboard = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]
+];
+tempboard = theboard;
 
 best_score = -1000
 best_col = Math.floor((Math.random()*6)+0);
     for(var i = 0; i < valid_locations.length; i++){
         let tempboard = theboard;
-        tempboard = 
+        tempboard = drop(i,alpha,tempboard);
         score_position = score(tempboard,alpha);
+        if (score_position > best_score){
+            best_score = score_position;
+            best_col = i;
+        }
     }
-            //depth++;
-            //let tempboard = theboard;
-            //tempboard = drop(i,alpha,tempboard);
-//            score_position = score(drop(i,alpha,theboard),alpha);
-            // if (score_position > best_score){
-            //     best_score = score_position
-            //     best_col = i;
-            // }
+    comprefresh(alpha,tempboard);
     return best_col;
 }
 
@@ -225,21 +244,29 @@ function score(board,player){
     //win in - direction
    for(row=0;row<6;row++){
     for (col=0;col<4;col++){
-        if (board[row][col] == board[row][col+1] 
-            && board[row][col+1] == board[row][col+2]  
-            && board[row][col+2] == board[row][col+3]){
+        if (isOdd(board[row][col]) == isOdd(board[row][col+1]) 
+            && isOdd(board[row][col+1]) == isOdd(board[row][col+2])  
+            && isOdd(board[row][col+2]) == isOdd(board[row][col+3])){
             if (board[row][col] == player){
-                score_position = 100;      
+                score_position += 100;      
                 }  
             }
-        else if (board[row][col] == board[row][col+1] 
-            && board[row][col+1] == board[row][col+2]){
+        else if (isOdd(board[row][col]) == isOdd(board[row][col+1]) 
+            && isOdd(board[row][col+1]) == isOdd(board[row][col+2])){
             if(board[row][col] == player){
-                score_position = 10;
+                score_position += 10;
                 }
             }
         }        
     }
     console.log("Score: "+score_position);
 return score_position;
+}
+//returns true if number is odd
+function isOdd(num){
+    if (num%2==0){
+        return false;
+    }else{
+        return true;
+    }
 }
