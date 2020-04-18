@@ -197,7 +197,6 @@ function CompTurn() {
             ComputerTurn(bestmove, player2);
         }
     }
-    console.log("here");
 }
 //scores the board 
 function evaluate(compBoard, max, min) {

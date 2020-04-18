@@ -1,4 +1,4 @@
-var gridboard = [];
+let gridboard = [];
 var player = 1;
 startconnect();
 //Constructor (starts a new game)
@@ -71,24 +71,23 @@ function columnFull(gridboard, columnselect){
 }
 //drops the play down the column, returns updated board
 function drop(col, player, connectboard) {
+    var tempboard = connectboard;
     for (var row = 5; row >= 0; row--) {
-        if (connectboard[row][col] == 0) {
-            connectboard[row][col] = player;
-            return connectboard;
-        }else{
-            //do nothing!
+        if (tempboard[row][col] == 0) {
+            tempboard[row][col] = player;
+            return tempboard;
         }
     }
 }
-function comprefresh(player,tempboard){
+function comprefresh(alpha,beta,tempboard){
     for (var row = 0; row < 6; row++) {
         for (var col = 0; col < 7; col++) {
-        if (tempboard[row][col] == player){
+        if (tempboard[row][col] == alpha){
             tempboard[row][col] = 0;
         }
-        // if (tempboard[row][col] == 4){
-        //     tempboard[row][col] = 0;
-        // }
+        if (tempboard[row][col] == beta){
+            tempboard[row][col] = 0;
+        }
         }
     }
 }
@@ -161,6 +160,62 @@ function checkConnectWin(gridboard) {
         }
 return Winner;            
 }
+function checkConnectWinner(gridboard,theplayer) {
+    Winner = false;
+    //win in - direction
+    for(row=0;row<6;row++){
+        for (col=0;col<4;col++){
+            if (gridboard[row][col] == gridboard[row][col+1] 
+                && gridboard[row][col+1] == gridboard[row][col+2]  
+                && gridboard[row][col+2] == gridboard[row][col+3]){
+                    if((gridboard[row][col] == theplayer)){
+                        Winner=true;
+                        return Winner;
+                    }
+                }
+            }        
+        }
+    //win in | direction
+        for(row=0;row<3;row++){
+            for (col=0;col<7;col++){
+                if (gridboard[row][col] == gridboard[row+1][col] 
+                        && gridboard[row+1][col] == gridboard[row+2][col]  
+                        && gridboard[row+2][col] == gridboard[row+3][col]){
+                    if((gridboard[row][col] == theplayer)){
+                        Winner=true;
+                        return Winner;
+                }
+            }
+        }        
+    }
+    //win in \ direction
+        for(row=0;row<3;row++){
+            for (col=0;col<4;col++){
+                if (gridboard[row][col] == gridboard[row+1][col+1] 
+                        && gridboard[row+1][col+1] == gridboard[row+2][col+2]  
+                        && gridboard[row+2][col+2] == gridboard[row+3][col+3]){
+                    if((gridboard[row][col] == theplayer)){
+                        Winner=true;
+                        return Winner;
+                    }
+                }
+            }        
+        }            
+    //win in / direction
+        for(row=0;row<3;row++){
+            for (col=3;col<7;col++){
+                if (gridboard[row][col] == gridboard[row+1][col-1] 
+                        && gridboard[row+1][col-1] == gridboard[row+2][col-2]  
+                        && gridboard[row+2][col-2] == gridboard[row+3][col-3]){
+                    if((gridboard[row][col] == theplayer)){
+                        Winner=true;
+                        return Winner;
+                    }
+                }
+            }        
+        }
+return Winner;            
+}
 //returns true if there is a draw
 function checkConnectDraw(Connectboard) {
     if (!checkConnectWin(Connectboard)&&checkConnectFull(Connectboard)){
@@ -196,77 +251,205 @@ function endconnect(){
         }
     }
 }
-function ConnectComp(){
-    best_column = alphabeta(gridboard,player+2);
-    selectColumn(best_column);
-}
-function alphabeta(theboard,alpha){
-
-//valid locations
-let valid_locations = [];
-    for(var i = 0;i<7;i++){
-        if(!(columnFull(theboard,i))){
-            valid_locations.push(i);
-        }
-    }
-//copy theboard to temp board
-let tempboard = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-];
-tempboard = theboard;
-
-best_score = -1000
-best_col = Math.floor((Math.random()*6)+0);
-    for(var i = 0; i < valid_locations.length; i++){
-        let tempboard = theboard;
-        tempboard = drop(i,alpha,tempboard);
-        score_position = score(tempboard,alpha);
-        if (score_position > best_score){
-            best_score = score_position;
-            best_col = i;
-        }
-    }
-    comprefresh(alpha,tempboard);
-    return best_col;
-}
-
-
-//variables:
-//player: the player to score
-//return an integer representing the sore of a given player
-function score(board,player){
-   let score_position = 0;
-    //win in - direction
-   for(row=0;row<6;row++){
-    for (col=0;col<4;col++){
-        if (isOdd(board[row][col]) == isOdd(board[row][col+1]) 
-            && isOdd(board[row][col+1]) == isOdd(board[row][col+2])  
-            && isOdd(board[row][col+2]) == isOdd(board[row][col+3])){
-            if (board[row][col] == player){
-                score_position += 100;      
-                }  
-            }
-        else if (isOdd(board[row][col]) == isOdd(board[row][col+1]) 
-            && isOdd(board[row][col+1]) == isOdd(board[row][col+2])){
-            if(board[row][col] == player){
-                score_position += 10;
-                }
-            }
-        }        
-    }
-    console.log("Score: "+score_position);
-return score_position;
-}
-//returns true if number is odd
 function isOdd(num){
     if (num%2==0){
         return false;
     }else{
         return true;
     }
+}
+function ConnectComp(){
+    // if (player == 1){
+    //     alpha = player+2 //odd (Yellow) 3
+    //     beta = player+3   //even (Red) 4
+    // }else{
+    //     alpha = player+1  //odd (Yellow) 3
+    //     beta = player+2 //even (Red) 4
+    // }
+
+    best_column = pick_best_move(gridboard, player);
+    selectColumn(best_column);
+}
+function alphabeta(theboard,depth,alpha,beta,maxplayer){
+//valid locations
+    let valid_locations = [];
+        for(var i = 0;i<7;i++){
+            if(!(columnFull(theboard,i))){
+                valid_locations.push(i);
+            }
+        }
+//The terminal states
+    // if (valid_locations.length == 0 || checkConnectWinner(theboard,alpha) || checkConnectWinner(theboard,beta)){
+    //     if (checkConnectWinner(theboard,alpha)){
+    //         return 10000000000;
+    //     }else if (checkConnectWinner(theboard,beta)){
+    //         return -10000000000;
+    //     }else{
+    //         return 0;
+    //     }
+    // }else{
+    //     return score(theboard,alpha,beta);
+    // }
+// if(maxplayer){
+
+//         tempboard = theboard;
+//         best_score = -Infinity;
+//         deepestDepth = 0;
+//         best_col = -1;
+
+//     for(var i = 0; i < valid_locations.length; i++){
+//         let tempboard = theboard;
+//         tempboard = drop(valid_locations[i],alpha,tempboard);
+//         let next_move,depth = alphabeta(tempboard,(depth-1),alpha,beta,false);
+        
+        
+//         next_move_score = score(next_move,alpha);
+//                 // console.log("Score "+score_position);
+//                 // console.log("Column " + valid_locations[i]);
+//                 if (score_position > best_score){
+//                     best_score = score_position;
+//                     best_col = valid_locations[i];
+//                 }
+//             }
+//             comprefresh(alpha,beta,tempboard);
+//             return best_col;
+// }
+//     if (depth == 0 || checkConnectWin(theboard)){
+//         if (checkConnectWin(theboard)){
+//             return theboard,depth;
+//         }
+//     }
+// }
+    }
+
+function pick_best_move(theboard,theplayer){
+    let tempboard = theboard.map(inner => inner.slice());
+    //valid locations
+    var valid_locations = [];
+        for(var i = 0;i<7;i++){
+            if(!(columnFull(theboard,i))){
+                valid_locations.push(i);
+            }
+        }
+    best_score = -10000;
+    var best_column = 0;
+    for(var i = 0; i < valid_locations.length; i++){
+        console.log(theplayer);
+        tempboard = drop(valid_locations[i],theplayer,tempboard);
+        score_position = score(tempboard,theplayer);
+        
+        console.log(tempboard);
+        console.log("Score: "+ score_position);
+        console.log("Column: "+valid_locations[i]);
+        
+        //comprefresh(theplayer,theopponent,tempboard);
+        if (score_position>best_score){
+            best_score = score_position;
+            best_column = valid_locations[i];
+        }
+        //comprefresh(alpha,beta,tempboard);
+    }
+    return best_column;    
+}
+
+function score(board,player){
+Array.prototype.count = function(nubmer) {
+    var count = 0;
+    for(var i = 0; i < this.length; ++i){
+        if(this[i] == nubmer)
+            count++;
+    }
+    return count;
+}
+var score_position = 0;
+     //win in - direction
+     for(row=0;row<6;row++){
+        for (col=0;col<4;col++){
+            var window_array = [];
+            window_array.push(board[row][col]);
+            window_array.push(board[row][col+1]);
+            window_array.push(board[row][col+2]);
+            window_array.push(board[row][col+3]);
+            if(!window_array.includes(0)){
+                if(window_array.includes(1) !== window_array.includes(2)){
+                        score_position = 100;
+                        return score_position;
+                    }
+            }
+            if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                score_position = 5;
+            }
+            if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                score_position = 2;
+            }
+        }
+    }
+
+    //win in | direction
+        for(row=0;row<3;row++){
+            for (col=0;col<7;col++){
+                var window_array = [];
+                window_array.push(board[row][col])
+                window_array.push(board[row+1][col])
+                window_array.push(board[row+2][col])
+                window_array.push(board[row+3][col])
+                if(!window_array.includes(0)){
+                    if(window_array.includes(1) !== window_array.includes(2)){
+                            score_position = 100;
+                            return score_position;
+                    }
+                }   
+            if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                score_position = 5;
+            }
+            if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                score_position = 2;
+            }
+        }        
+    }
+    //win in \ direction
+        for(row=0;row<3;row++){
+            for (col=0;col<4;col++){
+                var window_array = [];
+                window_array.push(board[row][col])
+                window_array.push(board[row+1][col+1])
+                window_array.push(board[row+2][col+2])
+                window_array.push(board[row+3][col+3])
+                if(!window_array.includes(0)){
+                    if(window_array.includes(1) !== window_array.includes(2)){
+                            score_position = 100;
+                            return score_position;
+                    }
+                }   
+            if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                score_position = 5;
+            }
+            if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                score_position = 2;
+            }
+        }
+    }                 
+    //win in / direction
+        for(row=0;row<3;row++){
+            for (col=3;col<7;col++){
+                var window_array = [];
+                window_array.push(board[row][col])
+                window_array.push(board[row+1][col-1])
+                window_array.push(board[row+2][col-2])
+                window_array.push(board[row+3][col-3])
+                if(!window_array.includes(0)){
+                    if(window_array.includes(1) !== window_array.includes(2)){
+                            score_position = 100;
+                            return score_position;
+                    }
+                }   
+            if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                score_position = 5;
+            }
+            if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                score_position = 2;
+            }
+        }
+    }        
+return score_position;
 }
