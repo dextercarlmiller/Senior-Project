@@ -259,68 +259,73 @@ function isOdd(num){
     }
 }
 function ConnectComp(){
-    // if (player == 1){
-    //     alpha = player+2 //odd (Yellow) 3
-    //     beta = player+3   //even (Red) 4
-    // }else{
-    //     alpha = player+1  //odd (Yellow) 3
-    //     beta = player+2 //even (Red) 4
-    // }
-
-    best_column = pick_best_move(gridboard, player);
+    if (player == 1){
+        alpha = 1 //maximizer
+        beta = 2  //minimizer
+    }else{  
+        alpha = 2  
+        beta = 1 
+    }
+    best_column = alphabeta(gridboard,5,alpha,beta,true);
     selectColumn(best_column);
 }
-function alphabeta(theboard,depth,alpha,beta,maxplayer){
-//valid locations
-    let valid_locations = [];
-        for(var i = 0;i<7;i++){
-            if(!(columnFull(theboard,i))){
-                valid_locations.push(i);
+function isterminal_node(theboard,alpha,beta){
+    return checkConnectWinner(theboard,alpha) || checkConnectWinner(theboard,beta);
+}
+function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
+    //copy to the tempboard
+    let tempboard = theboard.map(inner => inner.slice());
+    //get valid locations
+    var valid_locations = [];
+    for(var i = 0;i<7;i++){
+        if(!(columnFull(tempboard,i))){
+            valid_locations.push(i);
+        }
+    }
+    //is_terminal = isterminal_node(theboard,alpha,beta);
+    if (depth == 0 || isterminal_node(theboard,alpha,beta)){
+        if(isterminal_node(theboard,alpha,beta)){
+            if (checkConnectWinner(theboard,alpha)){ //alpha is the maximizer
+                return 10000000;
+            }else if (checkConnectWinner(theboard,beta)){
+                return -10000000;
+            }else{
+                return 0;
+            }
+        }else{//depth is zero
+            return score(tempboard,alpha);      
+        }
+    }
+
+    if (maximizingplayer){
+        var value = -Infinity;
+        var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
+        for(var i = 0; i < valid_locations.length; i++){
+        //copy the tempboard
+        var b_copy = tempboard.map(inner => inner.slice());
+            b_copy = drop(valid_locations[i],alpha,tempboard);
+            column,score_position = alphabeta(tempboard,depth-1,alpha,beta,false)
+            if(score_position>value){
+                value = score_position;
+                var best = valid_locations[i];
             }
         }
-//The terminal states
-    // if (valid_locations.length == 0 || checkConnectWinner(theboard,alpha) || checkConnectWinner(theboard,beta)){
-    //     if (checkConnectWinner(theboard,alpha)){
-    //         return 10000000000;
-    //     }else if (checkConnectWinner(theboard,beta)){
-    //         return -10000000000;
-    //     }else{
-    //         return 0;
-    //     }
-    // }else{
-    //     return score(theboard,alpha,beta);
-    // }
-// if(maxplayer){
-
-//         tempboard = theboard;
-//         best_score = -Infinity;
-//         deepestDepth = 0;
-//         best_col = -1;
-
-//     for(var i = 0; i < valid_locations.length; i++){
-//         let tempboard = theboard;
-//         tempboard = drop(valid_locations[i],alpha,tempboard);
-//         let next_move,depth = alphabeta(tempboard,(depth-1),alpha,beta,false);
-        
-        
-//         next_move_score = score(next_move,alpha);
-//                 // console.log("Score "+score_position);
-//                 // console.log("Column " + valid_locations[i]);
-//                 if (score_position > best_score){
-//                     best_score = score_position;
-//                     best_col = valid_locations[i];
-//                 }
-//             }
-//             comprefresh(alpha,beta,tempboard);
-//             return best_col;
-// }
-//     if (depth == 0 || checkConnectWin(theboard)){
-//         if (checkConnectWin(theboard)){
-//             return theboard,depth;
-//         }
-//     }
-// }
+    }else{
+        var value = Infinity;
+        var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
+        for(var i = 0; i < valid_locations.length; i++){
+        //copy the tempboard
+        var c_copy = tempboard.map(inner => inner.slice());
+            c_copy = drop(valid_locations[i],beta,tempboard);
+            score_position = alphabeta(tempboard,depth-1,alpha,beta,true)
+            if(score_position<value){
+                value = score_position;
+                var best = valid_locations[i];
+            }        
+        }
     }
+    return best;
+}
 
 function pick_best_move(theboard,theplayer){
     let tempboard = theboard.map(inner => inner.slice());
@@ -331,17 +336,13 @@ function pick_best_move(theboard,theplayer){
                 valid_locations.push(i);
             }
         }
-    best_score = -10000;
+    best_score = -10000000;
     var best_column = 0;
     for(var i = 0; i < valid_locations.length; i++){
-        console.log(theplayer);
-        tempboard = drop(valid_locations[i],theplayer,tempboard);
-        score_position = score(tempboard,theplayer);
-        
-        console.log(tempboard);
-        console.log("Score: "+ score_position);
-        console.log("Column: "+valid_locations[i]);
-        
+        var b_copy = tempboard.map(inner => inner.slice()); 
+        b_copy = drop(valid_locations[i],theplayer,b_copy);
+        score_position = score(b_copy,theplayer);
+                
         //comprefresh(theplayer,theopponent,tempboard);
         if (score_position>best_score){
             best_score = score_position;
@@ -361,7 +362,24 @@ Array.prototype.count = function(nubmer) {
     }
     return count;
 }
+if (player == 1){
+    player = 1;
+    var opponent = 2;
+}else{
+    player = 2;
+    opponent = 1;
+}
 var score_position = 0;
+
+    //Center column score
+    var center_array = [];
+    for(row=0;row<6;row++){
+        center_array.push(board[row][3]);   
+    }
+    var center_count = center_array.count(player);
+    score_position += center_count*3;
+
+
      //win in - direction
      for(row=0;row<6;row++){
         for (col=0;col<4;col++){
@@ -372,15 +390,17 @@ var score_position = 0;
             window_array.push(board[row][col+3]);
             if(!window_array.includes(0)){
                 if(window_array.includes(1) !== window_array.includes(2)){
-                        score_position = 100;
-                        return score_position;
+                        score_position += 100;
                     }
             }
             if(window_array.count(player) == 3 && window_array.count(0) == 1){
-                score_position = 5;
+                score_position += 5;
             }
             if(window_array.count(player) == 2 && window_array.count(0) == 2){
-                score_position = 2;
+                score_position += 2;
+            }
+            if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
+                score_position -= 80
             }
         }
     }
@@ -395,16 +415,18 @@ var score_position = 0;
                 window_array.push(board[row+3][col])
                 if(!window_array.includes(0)){
                     if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
                     }
                 }   
-            if(window_array.count(player) == 3 && window_array.count(0) == 1){
-                score_position = 5;
-            }
-            if(window_array.count(player) == 2 && window_array.count(0) == 2){
-                score_position = 2;
-            }
+                if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                    score_position += 5;
+                }
+                if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                    score_position += 2;
+                }
+                if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
+                    score_position -= 80
+                }
         }        
     }
     //win in \ direction
@@ -417,16 +439,18 @@ var score_position = 0;
                 window_array.push(board[row+3][col+3])
                 if(!window_array.includes(0)){
                     if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
                     }
                 }   
-            if(window_array.count(player) == 3 && window_array.count(0) == 1){
-                score_position = 5;
-            }
-            if(window_array.count(player) == 2 && window_array.count(0) == 2){
-                score_position = 2;
-            }
+                if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                    score_position += 5;
+                }
+                if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                    score_position += 2;
+                }
+                if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
+                    score_position -= 80
+                }
         }
     }                 
     //win in / direction
@@ -439,17 +463,19 @@ var score_position = 0;
                 window_array.push(board[row+3][col-3])
                 if(!window_array.includes(0)){
                     if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
                     }
                 }   
-            if(window_array.count(player) == 3 && window_array.count(0) == 1){
-                score_position = 5;
-            }
-            if(window_array.count(player) == 2 && window_array.count(0) == 2){
-                score_position = 2;
-            }
+                if(window_array.count(player) == 3 && window_array.count(0) == 1){
+                    score_position += 5;
+                }
+                if(window_array.count(player) == 2 && window_array.count(0) == 2){
+                    score_position += 2;
+                }
+                if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
+                    score_position -= 80
+                }
         }
     }        
-return score_position;
+return score_position
 }
