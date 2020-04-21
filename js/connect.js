@@ -245,7 +245,7 @@ function endconnect(){
     }
 }
 function ConnectComp(){
-    if(!checkConnectWin(gridboard)){
+    if(!checkConnectWin(gridboard) || !checkConnectFull(gridboard)){
         if (player == 1){
             alpha = 1 //maximizer
             beta = 2  //minimizer
@@ -393,8 +393,8 @@ var score_position = 0;
             window_array.push(board[row][col+3]);
             if(!window_array.includes(0)){
                 if(window_array.includes(player) !== window_array.includes(opponent)){
-                        score_position = 100;
-                        return score_position;
+                        score_position += 100;
+                        //return score_position;
                     }
             }
             if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -421,8 +421,8 @@ var score_position = 0;
                 window_array.push(board[row+3][col])
                 if(!window_array.includes(0)){
                     if(window_array.includes(player) !== window_array.includes(opponent)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
+                            //return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -452,8 +452,8 @@ var score_position = 0;
                 window_array.push(board[row+3][col+3])
                 if(!window_array.includes(0)){
                     if(window_array.includes(player) !== window_array.includes(opponent)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
+                            //return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -480,8 +480,8 @@ var score_position = 0;
                 window_array.push(board[row+3][col-3])
                 if(!window_array.includes(0)){
                     if(window_array.includes(player) !== window_array.includes(opponent)){
-                            score_position = 100;
-                            return score_position;
+                            score_position += 100;
+                            //return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
