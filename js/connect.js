@@ -27,13 +27,18 @@ function startconnect() {
 //Alerts if there is a winner
 function selectColumn(box) {
     try{
-    column = (box.target.id%10);
+    var column = (box.target.id%10);
     }catch(err){
         column = box;
         console.log("selected: "+column);
     }
+    if (column == null){
+        console.log("Here");
+        document.getElementById("AlertConnectWinner").innerText = "Game Over!";
+        console.log("here");
+    }
     if(!columnFull(gridboard, column)){
-        drop(column, player, gridboard);
+        gridboard = drop(column, player, gridboard);
         if (player == 1){
             player = 2;
             document.getElementById("AlertConnectWinner").innerText = "Player Turn: Red";
@@ -41,9 +46,9 @@ function selectColumn(box) {
         else{
             player = 1;
             document.getElementById("AlertConnectWinner").innerText = "Player Turn: Yellow";
-        }    
+        }
+    refreshgridboard(gridboard);    
     }
-    refreshgridboard(gridboard);
     AlertConnectWinner(gridboard,player);
 }
 //updates the board of the correct color
@@ -71,23 +76,11 @@ function columnFull(gridboard, columnselect){
 }
 //drops the play down the column, returns updated board
 function drop(col, player, connectboard) {
-    var tempboard = connectboard;
+    var tempboard = connectboard.map(inner => inner.slice());
     for (var row = 5; row >= 0; row--) {
         if (tempboard[row][col] == 0) {
             tempboard[row][col] = player;
             return tempboard;
-        }
-    }
-}
-function comprefresh(alpha,beta,tempboard){
-    for (var row = 0; row < 6; row++) {
-        for (var col = 0; col < 7; col++) {
-        if (tempboard[row][col] == alpha){
-            tempboard[row][col] = 0;
-        }
-        if (tempboard[row][col] == beta){
-            tempboard[row][col] = 0;
-        }
         }
     }
 }
@@ -251,30 +244,28 @@ function endconnect(){
         }
     }
 }
-function isOdd(num){
-    if (num%2==0){
-        return false;
-    }else{
-        return true;
-    }
-}
 function ConnectComp(){
-    if (player == 1){
-        alpha = 1 //maximizer
-        beta = 2  //minimizer
-    }else{  
-        alpha = 2  
-        beta = 1 
+    if(!checkConnectWin(gridboard)){
+        if (player == 1){
+            alpha = 1 //maximizer
+            beta = 2  //minimizer
+        }else{  
+            alpha = 2  
+            beta = 1 
+        }
+        var Temp_values = alphabeta(gridboard,6,alpha,beta,true);
+        //console.log(Temp_values);
+        best_column = Temp_values[1];
+        selectColumn(best_column);
     }
-    best_column = alphabeta(gridboard,5,alpha,beta,true);
-    selectColumn(best_column);
 }
 function isterminal_node(theboard,alpha,beta){
     return checkConnectWinner(theboard,alpha) || checkConnectWinner(theboard,beta);
 }
 function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
+    //console.log("DEPTH: "+depth);
     //copy to the tempboard
-    let tempboard = theboard.map(inner => inner.slice());
+    var tempboard = theboard.map(inner => inner.slice());
     //get valid locations
     var valid_locations = [];
     for(var i = 0;i<7;i++){
@@ -286,47 +277,63 @@ function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
     if (depth == 0 || isterminal_node(theboard,alpha,beta)){
         if(isterminal_node(theboard,alpha,beta)){
             if (checkConnectWinner(theboard,alpha)){ //alpha is the maximizer
-                return 10000000;
+                return [1000,null];
             }else if (checkConnectWinner(theboard,beta)){
-                return -10000000;
+                return [-1000,null];
             }else{
-                return 0;
+                return [0,null];
             }
         }else{//depth is zero
-            return score(tempboard,alpha);      
+            //console.log(tempboard);
+            return [score(tempboard,alpha),null];      
         }
     }
-
-    if (maximizingplayer){
+    //console.log(maximizingplayer);
+    if(maximizingplayer){
+        //console.log("MAX");
+        //console.log(tempboard);
         var value = -Infinity;
+        var bests = [];
+        var values = [];
         var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var b_copy = tempboard.map(inner => inner.slice());
-            b_copy = drop(valid_locations[i],alpha,tempboard);
-            column,score_position = alphabeta(tempboard,depth-1,alpha,beta,false)
+            b_copy = drop(valid_locations[i],alpha,b_copy);
+            var Temp_values = alphabeta(b_copy,depth-1,alpha,beta,false);
+            score_position = Temp_values[0];
             if(score_position>value){
                 value = score_position;
-                var best = valid_locations[i];
+                column = valid_locations[i];
+                values.push(score_position);
+                bests.push(valid_locations[i]);
             }
         }
-    }else{
+        return [values[values.length-1],bests[bests.length-1]];
+    }else{//minimizer
+        //console.log("MIN");
+        //console.log(tempboard);
         var value = Infinity;
+        var bests = [];
+        var values = [];
         var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var c_copy = tempboard.map(inner => inner.slice());
-            c_copy = drop(valid_locations[i],beta,tempboard);
-            score_position = alphabeta(tempboard,depth-1,alpha,beta,true)
+            c_copy = drop(valid_locations[i],beta,c_copy);
+            var Temp_values = alphabeta(c_copy,depth-1,alpha,beta,true);
+            score_position = Temp_values[0];
             if(score_position<value){
                 value = score_position;
-                var best = valid_locations[i];
+                column = valid_locations[i];
+                values.push(score_position);
+                bests.push(valid_locations[i]);
             }        
         }
+        return [values[values.length-1],bests[bests.length-1]];
     }
-    return best;
-}
 
+}
 function pick_best_move(theboard,theplayer){
     let tempboard = theboard.map(inner => inner.slice());
     //valid locations
@@ -352,7 +359,6 @@ function pick_best_move(theboard,theplayer){
     }
     return best_column;    
 }
-
 function score(board,player){
 Array.prototype.count = function(nubmer) {
     var count = 0;
@@ -370,7 +376,6 @@ if (player == 1){
     opponent = 1;
 }
 var score_position = 0;
-
     //Center column score
     var center_array = [];
     for(row=0;row<6;row++){
@@ -378,8 +383,6 @@ var score_position = 0;
     }
     var center_count = center_array.count(player);
     score_position += center_count*3;
-
-
      //win in - direction
      for(row=0;row<6;row++){
         for (col=0;col<4;col++){
@@ -389,8 +392,9 @@ var score_position = 0;
             window_array.push(board[row][col+2]);
             window_array.push(board[row][col+3]);
             if(!window_array.includes(0)){
-                if(window_array.includes(1) !== window_array.includes(2)){
-                        score_position += 100;
+                if(window_array.includes(player) !== window_array.includes(opponent)){
+                        score_position = 100;
+                        return score_position;
                     }
             }
             if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -400,11 +404,13 @@ var score_position = 0;
                 score_position += 2;
             }
             if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
-                score_position -= 80
+                score_position -= 5;
+            }
+            //if(window_array.count(opponent) == 4 && window_array.count(0) == 0){
+            //    score_position -= 100;
+                //return score_position;
             }
         }
-    }
-
     //win in | direction
         for(row=0;row<3;row++){
             for (col=0;col<7;col++){
@@ -414,8 +420,9 @@ var score_position = 0;
                 window_array.push(board[row+2][col])
                 window_array.push(board[row+3][col])
                 if(!window_array.includes(0)){
-                    if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position += 100;
+                    if(window_array.includes(player) !== window_array.includes(opponent)){
+                            score_position = 100;
+                            return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -424,11 +431,17 @@ var score_position = 0;
                 if(window_array.count(player) == 2 && window_array.count(0) == 2){
                     score_position += 2;
                 }
+                if(window_array.count(opponent) == 2 && window_array.count(0) == 2){
+                    score_position -= 2;
+                }
                 if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
-                    score_position -= 80
+                    score_position -= 5;
+                }
+                //if(window_array.count(opponent) == 4 && window_array.count(0) == 0){
+                 //   score_position -= 100;
+                    //return score_position;
                 }
         }        
-    }
     //win in \ direction
         for(row=0;row<3;row++){
             for (col=0;col<4;col++){
@@ -438,8 +451,9 @@ var score_position = 0;
                 window_array.push(board[row+2][col+2])
                 window_array.push(board[row+3][col+3])
                 if(!window_array.includes(0)){
-                    if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position += 100;
+                    if(window_array.includes(player) !== window_array.includes(opponent)){
+                            score_position = 100;
+                            return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -449,10 +463,13 @@ var score_position = 0;
                     score_position += 2;
                 }
                 if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
-                    score_position -= 80
+                    score_position -= 5;
                 }
-        }
-    }                 
+                //if(window_array.count(opponent) == 4 && window_array.count(0) == 0){
+                //    score_position -= 100;
+                    //return score_position;
+                }
+        }      
     //win in / direction
         for(row=0;row<3;row++){
             for (col=3;col<7;col++){
@@ -462,8 +479,9 @@ var score_position = 0;
                 window_array.push(board[row+2][col-2])
                 window_array.push(board[row+3][col-3])
                 if(!window_array.includes(0)){
-                    if(window_array.includes(1) !== window_array.includes(2)){
-                            score_position += 100;
+                    if(window_array.includes(player) !== window_array.includes(opponent)){
+                            score_position = 100;
+                            return score_position;
                     }
                 }   
                 if(window_array.count(player) == 3 && window_array.count(0) == 1){
@@ -473,9 +491,12 @@ var score_position = 0;
                     score_position += 2;
                 }
                 if(window_array.count(opponent) == 3 && window_array.count(0) == 1){
-                    score_position -= 80
+                    score_position -= 5;
+                }
+                //if(window_array.count(opponent) == 4 && window_array.count(0) == 0){
+                //    score_position -= 100;
+                    //return score_position;
                 }
         }
-    }        
-return score_position
+return score_position;
 }
