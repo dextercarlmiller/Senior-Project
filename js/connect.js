@@ -288,7 +288,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = -Infinity;
         var bests = [];
         var values = [];
-        var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var b_copy = tempboard.map(inner => inner.slice());
@@ -296,8 +295,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
             var Temp_values = alphabeta(b_copy,depth-1,maximizer,minimizer,false);
             score_position = Temp_values[0];
             if(score_position>value){
-                value = score_position;
-                column = valid_locations[i];
                 values.push(score_position);
                 bests.push(valid_locations[i]);
             }
@@ -307,7 +304,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = Infinity;
         var bests = [];
         var values = [];
-        var column = valid_locations[Math.floor(Math.random()*valid_locations.length)];
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var c_copy = tempboard.map(inner => inner.slice());
@@ -315,8 +311,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
             var Temp_values = alphabeta(c_copy,depth-1,maximizer,minimizer,true);
             score_position = Temp_values[0];
             if(score_position<value){
-                value = score_position;
-                column = valid_locations[i];
                 values.push(score_position);
                 bests.push(valid_locations[i]);
             }        
