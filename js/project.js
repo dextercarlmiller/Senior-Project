@@ -189,7 +189,12 @@ function AlertWinner(board) {
 //Computer Turn
 function CompTurn() {
     let compBoard = board;
-    let bestmove = findBestMove(compBoard, turnValue);
+    if (turnValue == 1) {
+        var player = "X";
+    } else {
+        var player = "O";
+    }
+    let bestmove = minimax(compBoard,true,player,0);
     if(!AlertWinner(board)){
         if (turnValue == 1) {
             ComputerTurn(bestmove, player1);
@@ -205,37 +210,6 @@ function evaluate(compBoard, max, min) {
     } else if (checkWin(compBoard, min)) {
         return -10;
     }
-}
-//returns the best move
-function findBestMove(compBoard, player) {
-    let bestValue = -1000;
-    let depth = 0;
-    bestmove = [];
-    bestscore = [];
-    if (player == 1) {
-        var max = "X";
-    } else {
-        var max = "O";
-    }
-    //This fills the availableSpots array with empty spaces
-    let availableSpots = [];
-    for (var i = 0; i < compBoard.length; i++) {
-        if (Number.isInteger(compBoard[i])) {
-            availableSpots.push(compBoard[i]);
-        }
-    }
-    //This is the maximizer's first move (start recursion)
-    for (var i = 0; i < availableSpots.length; i++) {
-        compBoard[availableSpots[i]] = max;
-        let moveValue = Math.max(bestValue, minimax(compBoard, false, max, depth + 1));
-        compBoard[availableSpots[i]] = availableSpots[i];
-        if (moveValue > bestValue) {
-            bestValue = moveValue;
-            bestmove.push(availableSpots[i]);
-        }
-    }
-    let FinalMove = bestmove[bestmove.length - 1];
-    return FinalMove;
 }
 //recursive function minimax
 function minimax(minimaxBoard, isMax, MaxValue, depth) {
