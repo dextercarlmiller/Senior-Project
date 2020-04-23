@@ -1,4 +1,5 @@
 let gridboard = [];
+let difficulty = GetDifficulty();
 var player = 1;
 startconnect();
 //Constructor (starts a new game)
@@ -253,10 +254,14 @@ function ConnectComp() {
             maximizer = 2;
             minimizer = 1;
         }
-        var Temp_values = alphabeta(gridboard, 6, maximizer, minimizer, true, -Infinity, Infinity);
+        var Temp_values = alphabeta(gridboard, difficulty, maximizer, minimizer, true, -Infinity, Infinity);
         best_column = Temp_values[1];
         selectColumn(best_column);
     }
+}
+
+function GetDifficulty() {
+    return 6;
 }
 
 function isterminal_node(theboard, maximizer, minimizer) {
@@ -283,7 +288,12 @@ function alphabeta(theboard, depth, maximizer, minimizer, maximizingplayer, alph
             }
         } else { //depth is zero
             //If initial depth is even, score alpha; else score beta
-            return [score(tempboard, maximizer), null];
+            if (difficulty % 2 == 0) {
+                return [score(tempboard, maximizer), null];
+            } else {
+
+                return [score(tempboard, maximizer), null];
+            }
         }
     }
     if (maximizingplayer) {
