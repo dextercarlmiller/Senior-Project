@@ -247,21 +247,21 @@ function endconnect(){
 function ConnectComp(){
     if(!checkConnectWin(gridboard) || !checkConnectFull(gridboard)){
         if (player == 1){
-            alpha = 1 //maximizer
-            beta = 2  //minimizer
+            maximizer = 1; //maximizer
+            minimizer = 2;  //minimizer
         }else{  
-            alpha = 2  
-            beta = 1 
+            maximizer = 2;  
+            minimizer = 1; 
         }
-        var Temp_values = alphabeta(gridboard,6,alpha,beta,true);
+        var Temp_values = alphabeta(gridboard,6,maximizer,minimizer,true);
         best_column = Temp_values[1];
         selectColumn(best_column);
     }
 }
-function isterminal_node(theboard,alpha,beta){
-    return checkConnectWinner(theboard,alpha) || checkConnectWinner(theboard,beta);
+function isterminal_node(theboard,maximizer,minimizer){
+    return checkConnectWinner(theboard,maximizer) || checkConnectWinner(theboard,minimizer);
 }
-function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
+function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
     var tempboard = theboard.map(inner => inner.slice());
     //get valid locations
     var valid_locations = [];
@@ -270,18 +270,18 @@ function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
             valid_locations.push(i);
         }
     }
-    if (depth == 0 || isterminal_node(theboard,alpha,beta)){
-        if(isterminal_node(theboard,alpha,beta)){
-            if (checkConnectWinner(theboard,alpha)){ //alpha is the maximizer
+    if (depth == 0 || isterminal_node(theboard,maximizer,minimizer)){
+        if(isterminal_node(theboard,maximizer,minimizer)){
+            if (checkConnectWinner(theboard,maximizer)){ //alpha is the maximizer
                 return [1000,null];
-            }else if (checkConnectWinner(theboard,beta)){
+            }else if (checkConnectWinner(theboard,minimizer)){
                 return [-1000,null];
             }else{
                 return [0,null];
             }
         }else{//depth is zero
             //If initial depth is even, score alpha; else score beta
-            return [score(tempboard,alpha),null];      
+            return [score(tempboard,maximizer),null];      
         }
     }
     if(maximizingplayer){
@@ -292,8 +292,8 @@ function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var b_copy = tempboard.map(inner => inner.slice());
-            b_copy = drop(valid_locations[i],alpha,b_copy);
-            var Temp_values = alphabeta(b_copy,depth-1,alpha,beta,false);
+            b_copy = drop(valid_locations[i],maximizer,b_copy);
+            var Temp_values = alphabeta(b_copy,depth-1,maximizer,minimizer,false);
             score_position = Temp_values[0];
             if(score_position>value){
                 value = score_position;
@@ -311,8 +311,8 @@ function alphabeta(theboard,depth,alpha,beta,maximizingplayer){
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var c_copy = tempboard.map(inner => inner.slice());
-            c_copy = drop(valid_locations[i],beta,c_copy);
-            var Temp_values = alphabeta(c_copy,depth-1,alpha,beta,true);
+            c_copy = drop(valid_locations[i],minimizer,c_copy);
+            var Temp_values = alphabeta(c_copy,depth-1,maximizer,minimizer,true);
             score_position = Temp_values[0];
             if(score_position<value){
                 value = score_position;
