@@ -253,7 +253,7 @@ function ConnectComp(){
             maximizer = 2;  
             minimizer = 1; 
         }
-        var Temp_values = alphabeta(gridboard,6,maximizer,minimizer,true);
+        var Temp_values = alphabeta(gridboard,6,maximizer,minimizer,true,alpha,beta);
         best_column = Temp_values[1];
         selectColumn(best_column);
     }
@@ -288,15 +288,20 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = -Infinity;
         var bests = [];
         var values = [];
+        AlphaLoop:
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var b_copy = tempboard.map(inner => inner.slice());
             b_copy = drop(valid_locations[i],maximizer,b_copy);
-            var Temp_values = alphabeta(b_copy,depth-1,maximizer,minimizer,false);
+            var Temp_values = alphabeta(b_copy,depth-1,maximizer,minimizer,false,alpha,beta);
             score_position = Temp_values[0];
             if(score_position>value){
                 values.push(score_position);
                 bests.push(valid_locations[i]);
+            }
+            alpha = Math.max(alpha,value);
+            if(alpha>=beta){
+                break AlphaLoop;
             }
         }
         return [values[values.length-1],bests[bests.length-1]];
@@ -304,15 +309,20 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = Infinity;
         var bests = [];
         var values = [];
+        BetaLoop:
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var c_copy = tempboard.map(inner => inner.slice());
             c_copy = drop(valid_locations[i],minimizer,c_copy);
-            var Temp_values = alphabeta(c_copy,depth-1,maximizer,minimizer,true);
+            var Temp_values = alphabeta(c_copy,depth-1,maximizer,minimizer,true,alpha,beta);
             score_position = Temp_values[0];
             if(score_position<value){
                 values.push(score_position);
                 bests.push(valid_locations[i]);
+            }
+            beta = Math.min(beta,value);
+            if(alpha>=beta){
+                break BetaLoop;
             }        
         }
         return [values[values.length-1],bests[bests.length-1]];
