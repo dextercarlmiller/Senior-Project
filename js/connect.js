@@ -253,7 +253,7 @@ function ConnectComp(){
             maximizer = 2;  
             minimizer = 1; 
         }
-        var Temp_values = alphabeta(gridboard,6,maximizer,minimizer,true,alpha,beta);
+        var Temp_values = alphabeta(gridboard,6,maximizer,minimizer,true,-Infinity,Infinity);
         best_column = Temp_values[1];
         selectColumn(best_column);
     }
@@ -261,7 +261,7 @@ function ConnectComp(){
 function isterminal_node(theboard,maximizer,minimizer){
     return checkConnectWinner(theboard,maximizer) || checkConnectWinner(theboard,minimizer);
 }
-function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
+function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer,alpha,beta){
     var tempboard = theboard.map(inner => inner.slice());
     //get valid locations
     var valid_locations = [];
@@ -288,7 +288,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = -Infinity;
         var bests = [];
         var values = [];
-        AlphaLoop:
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var b_copy = tempboard.map(inner => inner.slice());
@@ -298,10 +297,11 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
             if(score_position>value){
                 values.push(score_position);
                 bests.push(valid_locations[i]);
-            }
-            alpha = Math.max(alpha,value);
+            }  
+            prune_value = Math.max(value,Temp_values[0]);            
+            alpha = Math.max(alpha,prune_value);
             if(alpha>=beta){
-                break AlphaLoop;
+                return [values[values.length-1],bests[bests.length-1]];
             }
         }
         return [values[values.length-1],bests[bests.length-1]];
@@ -309,7 +309,6 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
         var value = Infinity;
         var bests = [];
         var values = [];
-        BetaLoop:
         for(var i = 0; i < valid_locations.length; i++){
         //copy the tempboard
         var c_copy = tempboard.map(inner => inner.slice());
@@ -320,9 +319,10 @@ function alphabeta(theboard,depth,maximizer,minimizer,maximizingplayer){
                 values.push(score_position);
                 bests.push(valid_locations[i]);
             }
-            beta = Math.min(beta,value);
+            prune_value = Math.min(value,Temp_values[0]);
+            beta = Math.min(beta,prune_value);
             if(alpha>=beta){
-                break BetaLoop;
+                return [values[values.length-1],bests[bests.length-1]];
             }        
         }
         return [values[values.length-1],bests[bests.length-1]];
