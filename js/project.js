@@ -2,6 +2,7 @@ var board = [];
 const player1 = "X";
 const player2 = "O";
 var turnValue = 1;
+var iterations = 0;
 const cells = document.querySelectorAll(".celltictac");
 startTicTacToe();
 
@@ -34,7 +35,11 @@ function endGame() {
 //player turn function
 function playerturn(box) {
     if (turnValue == 1) {
-        turn(box.target.id, player1)
+        try{
+            turn(box.target.id, player1);
+        } catch (err) {
+            turn(box, player1);
+        }
         if(AlertWinner(board)){
             document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
             endGame();
@@ -44,36 +49,16 @@ function playerturn(box) {
             endGame();
         }
     } else {
-        turn(box.target.id, player2)
+        try{
+            turn(box.target.id, player2);
+        } catch (err) {
+            turn(box, player2);
+        }
         if(AlertWinner(board)){
             document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
             endGame();
         }
         if(AlertCat(board)){
-            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
-            endGame();
-        }
-    }
-}
-//computer turn function
-function ComputerTurn(box) {
-    if (turnValue == 1) {
-        turn(box, player1)
-        if(AlertWinner(board,player1)){
-            document.getElementById("AlertWinner").innerText = (player1 +" is the Winner!");        
-            endGame();
-        }
-        if(AlertCat(board,player1)){
-            document.getElementById("AlertWinner").innerText = ("It's a Draw!");
-            endGame();
-        }
-    } else {
-        turn(box, player2)
-        if(AlertWinner(board,player2)){
-            document.getElementById("AlertWinner").innerText = (player2 +" is the Winner!");        
-            endGame();
-        }
-        if(AlertCat(board,player2)){
             document.getElementById("AlertWinner").innerText = ("It's a Draw!");
             endGame();
         }
@@ -194,12 +179,14 @@ function CompTurn() {
     } else {
         var player = "O";
     }
-    let bestmove = minimax(compBoard,true,player,0);
-    if(!AlertWinner(board)){
+    iterations = 0;
+    var bestmove = minimax(compBoard,true,player,0)[1];
+    console.log(iterations);
+    if(!AlertWinner(compBoard)){
         if (turnValue == 1) {
-            ComputerTurn(bestmove, player1);
+            playerturn(bestmove, player1);
         } else {
-            ComputerTurn(bestmove, player2);
+            playerturn(bestmove, player2);
         }
     }
 }
@@ -213,6 +200,7 @@ function evaluate(compBoard, max, min) {
 }
 //recursive function minimax
 function minimax(minimaxBoard, isMax, MaxValue, depth) {
+    iterations += 1;
     if (MaxValue == "X") {
         var MinValue = "O";
     } else {
@@ -228,37 +216,40 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
     //Returns the score if maximizer won or minimizer
     let score = evaluate(minimaxBoard, MaxValue, MinValue);
     if (score == 10) {
-        return (score - depth);
+        return [(score - depth),null];
     }
     if (score == -10) {
-        return (score + depth);
+        return [(score + depth),null];
     }
     if (availableSpots.length == 0) {
-        return 0;
+        return [0,null];
     }
     //If it's maximizer's move
     if (isMax) {
-        var best = -1000;
+        var best = -Infinity;
         for (var i = 0; i < availableSpots.length; i++) {
             minimaxBoard[availableSpots[i]] = MaxValue;
-            var moveValue = minimax(minimaxBoard, false, MaxValue, depth + 1);
+            var moveValue = Math.max(best,minimax(minimaxBoard, false, MaxValue, depth + 1)[0]);
             minimaxBoard[availableSpots[i]] = availableSpots[i];
             if (moveValue > best) {
                 best = moveValue;
+                var bestmove = availableSpots[i];
             }
         }
+        return [best,bestmove];
     }
     //If it's minimizers move 
     else {
-        var best = 1000;
+        var best = Infinity;
         for (var i = 0; i < availableSpots.length; i++) {
             minimaxBoard[availableSpots[i]] = MinValue;
-            var moveValue = minimax(minimaxBoard, true, MaxValue, depth + 1);
+            var moveValue = Math.min(best,minimax(minimaxBoard, true, MaxValue, depth + 1)[0]);
             minimaxBoard[availableSpots[i]] = availableSpots[i];
             if (moveValue < best) {
                 best = moveValue;
+                var bestmove = availableSpots[i];
             }
         }
+        return [best,bestmove];
     }
-    return best;
 }
