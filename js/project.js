@@ -180,8 +180,7 @@ function CompTurn() {
         var player = "O";
     }
     iterations = 0;
-    var bestmove = minimax(compBoard,true,player,0)[1];
-    console.log(iterations);
+    var bestmove = minimax(compBoard,true,player,0,-Infinity,Infinity)[1];
     if(!AlertWinner(compBoard)){
         if (turnValue == 1) {
             playerturn(bestmove, player1);
@@ -199,7 +198,7 @@ function evaluate(compBoard, max, min) {
     }
 }
 //recursive function minimax
-function minimax(minimaxBoard, isMax, MaxValue, depth) {
+function minimax(minimaxBoard, isMax, MaxValue, depth,alpha,beta) {
     iterations += 1;
     if (MaxValue == "X") {
         var MinValue = "O";
@@ -234,9 +233,13 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
             if (moveValue > best) {
                 best = moveValue;
                 var bestmove = availableSpots[i];
+                }
+            alpha = Math.max(alpha,best);
+            if(alpha>=beta){
+                break;
             }
         }
-        return [best,bestmove];
+    return [best,bestmove];
     }
     //If it's minimizers move 
     else {
@@ -248,6 +251,10 @@ function minimax(minimaxBoard, isMax, MaxValue, depth) {
             if (moveValue < best) {
                 best = moveValue;
                 var bestmove = availableSpots[i];
+            }
+            beta = Math.min(beta,best);
+            if(alpha>=beta){
+                break;
             }
         }
         return [best,bestmove];

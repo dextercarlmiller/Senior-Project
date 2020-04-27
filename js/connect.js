@@ -34,9 +34,7 @@ function selectColumn(box) {
         console.log("selected: " + column);
     }
     if (column == null) {
-        console.log("Here");
         document.getElementById("AlertConnectWinner").innerText = "Game Over!";
-        console.log("here");
     }
     if (!columnFull(gridboard, column)) {
         gridboard = drop(column, player, gridboard);
@@ -254,6 +252,7 @@ function ConnectComp() {
             maximizer = 2;
             minimizer = 1;
         }
+        iterations = 0;
         var Temp_values = alphabeta(gridboard, difficulty, maximizer, minimizer, true, -Infinity, Infinity);
         best_column = Temp_values[1];
         selectColumn(best_column);
@@ -269,6 +268,7 @@ function isterminal_node(theboard, maximizer, minimizer) {
 }
 
 function alphabeta(theboard, depth, maximizer, minimizer, maximizingplayer, alpha, beta) {
+    iterations += 1;
     var tempboard = theboard.map(inner => inner.slice());
     //get valid locations
     var valid_locations = [];
@@ -292,7 +292,7 @@ function alphabeta(theboard, depth, maximizer, minimizer, maximizingplayer, alph
                 return [score(tempboard, maximizer), null];
             } else {
 
-                return [score(tempboard, maximizer), null];
+                return [score(tempboard, minimizer), null];
             }
         }
     }
