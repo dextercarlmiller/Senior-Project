@@ -402,9 +402,6 @@ function score(board, player) {
             if (window_array.count(player) == 2 && window_array.count(0) == 2) {
                 score_position += 2;
             }
-            if (window_array.count(opponent) == 2 && window_array.count(0) == 2) {
-                score_position -= 2;
-            }
             if (window_array.count(opponent) == 3 && window_array.count(0) == 1) {
                 score_position -= 5;
             }
