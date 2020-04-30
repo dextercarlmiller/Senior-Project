@@ -48,9 +48,7 @@
     "versionFirst": "4.7.6",
     "uniqCompNum": 23,
     "versionPublish": "4.11.6",
-    "screenshot": "screenshot.png",
-    "publishType": "local",
-    "publishPath": "file:///C:/Users/Dexter/Desktop/Senior-Project/Methodology"
+    "screenshot": "screenshot.png"
   },
   "pages": {
     "index.html": {
