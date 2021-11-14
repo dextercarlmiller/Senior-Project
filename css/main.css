@@ -52,7 +52,7 @@ a.link-text.nav-button {
   color: #fff;
   text-align: center;
   font-size: 20px;
-  font-family: 'Montserrat', cursive;
+  /* font-family: 'Montserrat', cursive; */
 }
 
 a.link-text.footer-nav {
